@@ -1,0 +1,8 @@
+AutomataModel.java
+ AutomataModel
+Main.java
+ Main
+CanvasController.java
+ CanvasController
+MainController.java
+ MainController

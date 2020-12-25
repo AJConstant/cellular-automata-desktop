@@ -9,21 +9,18 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Main extends Application {
 
-    private AutomataModel model;
-    private CanvasController canvasController;
+    private AutomataModel automataModel;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.model = new AutomataModel();
+        Logger logger = Logger.getLogger("Main");
 
         Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Canvas.fxml"));
-        loader.load();
-        canvasController = loader.getController();
-        canvasController.initModel(model);
 
         Scene scene = new Scene(root, 1280, 720);
         primaryStage.setScene(scene);
