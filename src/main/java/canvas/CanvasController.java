@@ -1,0 +1,76 @@
+package canvas;
+
+import com.jfoenix.controls.JFXButton;
+
+import domain.AutomataModel;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
+
+import java.net.URL;
+
+import java.util.ResourceBundle;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public class CanvasController implements Initializable {
+
+    public static Color background = Color.web("#DEF2F1");
+    public static Color foreground = Color.web("#2B7A78");
+
+
+    @FXML
+    private Canvas canvas;
+
+    @FXML
+    private Pane canvasBackground;
+
+    private AutomataModel model;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.canvasBackground.getStyleClass().add("light-canvas");
+    }
+
+    public void initModel(AutomataModel model) {
+        this.model = model;
+    }
+
+    public void drawCell(Integer cellID, Paint p) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        int row = cellID / 100;
+        int col = cellID % 100;
+        gc.setFill(p);
+        gc.fillRect(col * 6, row * 6, 6, 6);
+    }
+
+    @FXML
+    public void drawSingleAutomata(MouseEvent event) {
+        double x, y;
+        x = event.getX();
+        y = event.getY();
+        int col = (int) x / 6;
+        int row = (int) y / 6;
+        Integer cellID = col + 100 * row;
+        if (!this.model.getAutomata().contains(cellID)) {
+            this.model.getAutomata().add(cellID);
+            this.redrawCanvas();
+        }
+    }
+
+    private void redrawCanvas(){
+        for(int i=0; i < 10000; i++){
+            if(this.model.getAutomata().contains(i)){
+                drawCell(i, foreground);
+            } else {
+                drawCell(i, background);
+            }
+        }
+    }
+}

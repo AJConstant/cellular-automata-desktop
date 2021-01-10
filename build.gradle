@@ -23,4 +23,4 @@ dependencies {
     compile 'com.jfoenix:jfoenix:9.0.10'
 }
 
-mainClassName = 'Main'
+mainClassName = 'root.Main'

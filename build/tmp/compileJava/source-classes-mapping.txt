@@ -1,8 +1,10 @@
-AutomataModel.java
- AutomataModel
-Main.java
- Main
-CanvasController.java
- CanvasController
-MainController.java
- MainController
+root/Main.java
+ root.Main
+canvas/CanvasController.java
+ canvas.CanvasController
+drawer/DrawerController.java
+ drawer.DrawerController
+domain/AutomataModel.java
+ domain.AutomataModel
+root/MainController.java
+ root.MainController

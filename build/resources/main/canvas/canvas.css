@@ -1,0 +1,10 @@
+.canvas-background {
+    min-width: 600;
+    max-width: 600;
+    min-height: 600;
+    max-height: 600;
+}
+
+.light-canvas {
+    -fx-background-color: "#DEF2F1";
+}
