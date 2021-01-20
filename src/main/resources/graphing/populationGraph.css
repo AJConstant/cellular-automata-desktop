@@ -1,0 +1,11 @@
+.graph-dark {
+    -fx-background-color: "#17252a";
+}
+
+.chart-plot-background {
+    -fx-background-color: "#17252a";
+}
+
+.axis-label {
+    -fx-text-fill: "#FEFFFF";
+}

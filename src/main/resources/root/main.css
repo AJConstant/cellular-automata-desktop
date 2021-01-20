@@ -2,3 +2,7 @@
     -fx-background-color: #FEFFFF;
     -fx-background-radius : 5px;
 }
+
+.chart-series-line {
+    -fx-stroke: #DEF2F1;
+}

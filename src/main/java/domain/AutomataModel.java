@@ -1,24 +1,22 @@
 package domain;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableSet;
-
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.IntStream;
+
+//TODO: Interface and Impls
+
+//TODO: Create rules class and automata type subclasses
 
 public class AutomataModel {
 
     private Integer generation;
-    private ObservableSet<Integer> automata;
+    private Set<Integer> automata;
 
     public AutomataModel(){
         this.generation = 0;
-        this.automata = FXCollections.observableSet(new HashSet<>());
-    }
-
-    public ObservableSet<Integer> getAutomata() {
-        return this.automata;
+        this.automata = new HashSet<>();
     }
 
     public void incrementGeneration() {
@@ -38,7 +36,7 @@ public class AutomataModel {
             neighbors[6] = this.automata.contains(row * 100 + col - 1) && ((col-1)/100 == col/100) ? 1 : 0;
             neighbors[7] = this.automata.contains((row - 1) * 100 + col - 1) && ((col-1)/100 == col/100) ? 1 : 0;
 
-            int sum = Arrays.stream(neighbors).sum();
+            int sum = IntStream.of(neighbors).sum();
 
             // Live cell
             if (this.automata.contains(i)) {
@@ -47,6 +45,7 @@ public class AutomataModel {
                 nextGen[i] = (sum == 3);
             }
         }
+
         this.automata.clear();
         for (int i = 0; i < 10000; i++) {
             if (nextGen[i]) {
@@ -78,4 +77,17 @@ public class AutomataModel {
     public Integer getGenerationNumber() {
         return this.generation;
     }
+
+    public Integer getPopulation() { return this.automata.size(); }
+
+    public void add(Integer cellID){
+        this.automata.add(cellID);
+    }
+
+    public boolean contains(Integer cellID) {
+        return this.automata.contains(cellID);
+    }
+
+    public void remove(Integer cellID) { this.automata.remove(cellID); }
+
 }

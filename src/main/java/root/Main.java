@@ -11,13 +11,9 @@ import javafx.stage.StageStyle;
 import java.util.logging.Logger;
 
 public class Main extends Application {
-
-    private AutomataModel automataModel;
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         Logger logger = Logger.getLogger("root.Main");
-
         Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
 
         Scene scene = new Scene(root, 1280, 720);

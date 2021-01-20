@@ -1,7 +1,5 @@
 package canvas;
 
-import com.jfoenix.controls.JFXButton;
-
 import domain.AutomataModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,19 +9,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 
 import java.util.ResourceBundle;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class CanvasController implements Initializable {
 
     public static Color background = Color.web("#DEF2F1");
     public static Color foreground = Color.web("#2B7A78");
-
 
     @FXML
     private Canvas canvas;
@@ -58,15 +53,13 @@ public class CanvasController implements Initializable {
         int col = (int) x / 6;
         int row = (int) y / 6;
         Integer cellID = col + 100 * row;
-        if (!this.model.getAutomata().contains(cellID)) {
-            this.model.getAutomata().add(cellID);
-            this.redrawCanvas();
-        }
+        this.model.add(cellID);
+        this.redrawCanvas();
     }
 
-    private void redrawCanvas(){
+    public void redrawCanvas(){
         for(int i=0; i < 10000; i++){
-            if(this.model.getAutomata().contains(i)){
+            if(this.model.contains(i)){
                 drawCell(i, foreground);
             } else {
                 drawCell(i, background);

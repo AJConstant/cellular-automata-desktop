@@ -1,16 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 
-<StackPane minHeight="600.0" minWidth="600.0" prefHeight="720.0" prefWidth="1080.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="root.MainController">
+<StackPane minHeight="600.0" minWidth="600.0" prefHeight="720.0" prefWidth="1080.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="root.MainController">
    <children>
       <AnchorPane prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #17252A;">
          <children>
-            <JFXHamburger fx:id="menuButton" fillWidth="false" layoutX="1041.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="25.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
+            <VBox alignment="TOP_RIGHT" layoutX="263.0" prefHeight="720.0" prefWidth="355.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <fx:include fx:id="populationGraph" source="../graphing/PopulationGraph.fxml"> </fx:include>
+                  <JFXButton fx:id="togglePlaybackButton" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" graphicTextGap="20.0" onAction="#togglePlayback" prefHeight="50" prefWidth="300" styleClass="button, light-button" text="PLAY" textFill="#feffff">
+                     <graphic>
+                        <SVGPath fx:id="togglePlaybackSVG" content="M8 5v14l11-7z" fill="#feffff" />
+                     </graphic></JFXButton>
+                  <JFXButton fx:id="advanceGenerationButton" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" graphicTextGap="20.0" onAction="#advanceGeneration" prefHeight="50" prefWidth="300" styleClass="button, light-button" text="ADVANCE GENERATION" textFill="#feffff">
+                     <graphic>
+                        <SVGPath content="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" fill="#feffff" />
+                     </graphic></JFXButton>
+                  <JFXButton fx:id="randomizeBoardButton" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" graphicTextGap="20.0" onAction="#randomize" prefHeight="50" prefWidth="300" styleClass="button, light-button" text="RANDOMIZE" textFill="#feffff">
+                     <graphic>
+                        <SVGPath content="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" fill="#feffff" />
+                     </graphic>
+                  </JFXButton>
+                  <JFXButton fx:id="resetButton" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" graphicTextGap="20.0" onAction="#reset" prefHeight="50" prefWidth="300" styleClass="button, light-button" text="RESET MODEL" textFill="#feffff">
+                     <graphic>
+                        <SVGPath content="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="#feffff" />
+                     </graphic>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets left="15.0" right="15.0" top="50.0" />
+               </padding>
+            </VBox>
+            <JFXHamburger fx:id="menuButton" onMouseClicked="#toggleDrawer" fillWidth="false" layoutX="1041.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="25.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
             <fx:include fx:id="canvas" source="../canvas/Canvas.fxml" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
          </children>
       </AnchorPane>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="300.0" maxWidth="-Infinity" prefHeight="720.0" prefWidth="300.0" StackPane.alignment="CENTER_LEFT" />
+      <JFXDrawer fx:id="drawer" defaultDrawerSize="250.0" maxWidth="-Infinity" prefHeight="720.0" prefWidth="250.0" StackPane.alignment="CENTER_LEFT" />
    </children>
 </StackPane>
