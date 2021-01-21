@@ -5,20 +5,20 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import domain.AutomataModel;
+import domain.AutomataType;
+import domain.GenerationRule;
+import domain.automata_model.AutomataModel;
+import domain.automata_model.AutomataModelImpl;
 import graphing.PopulationGraphController;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
-import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -58,7 +58,7 @@ public class MainController implements Initializable {
 
     private Long TIME;
 
-    private AutomataModel model = new AutomataModel();
+    private AutomataModelImpl model;
 
     private AtomicBoolean animating;
 
@@ -70,6 +70,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.model = new AutomataModelImpl(AutomataType.TimeSeries2D, 42);
         this.canvasController.initModel(this.model);
         this.TIME = 50L;
 
@@ -84,6 +85,7 @@ public class MainController implements Initializable {
         }
 
         this.animating = new AtomicBoolean(false);
+        this.canvasController.drawModel(this.model);
     }
 
     @FXML
@@ -111,21 +113,21 @@ public class MainController implements Initializable {
                 new Thread(new Task<Void>() {
                             @Override
                             protected Void call() throws Exception {
-                                while(animating.get()){
-                                    try{
-                                        model.incrementGeneration();
-                                        Platform.runLater(() -> {
-                                            populationGraphController.plotPopulation(model);
-                                            canvasController.redrawCanvas();
-                                        });
-                                        Thread.sleep(TIME);
-                                    } catch (InterruptedException e) {
-                                        if(isCancelled()){
-                                            break;
-                                        }
-                                    }
-                                }
-                                return null;
+                    while(animating.get()){
+                        try{
+                            model.incrementGeneration();
+                            Platform.runLater(() -> {
+                                populationGraphController.plotPopulation(model);
+                                canvasController.drawModel(model);
+                            });
+                            Thread.sleep(TIME);
+                        } catch (InterruptedException e) {
+                            if(isCancelled()){
+                                break;
+                            }
+                        }
+                    }
+                    return null;
                             }
                 }).start();
 
@@ -141,14 +143,14 @@ public class MainController implements Initializable {
     @FXML
     public void advanceGeneration(ActionEvent actionEvent){
         this.model.incrementGeneration();
-        this.canvasController.redrawCanvas();
+        this.canvasController.drawModel(this.model);
         this.populationGraphController.plotPopulation(this.model);
     }
 
     @FXML
     public void randomize(ActionEvent actionEvent) {
         this.model.randomizeModel();
-        this.canvasController.redrawCanvas();
+        this.canvasController.drawModel(this.model);
         this.populationGraphController.resetGraph();
         this.populationGraphController.plotPopulation(this.model);
     }
@@ -156,7 +158,7 @@ public class MainController implements Initializable {
     @FXML
     public void reset(ActionEvent actionEvent) {
         this.model.resetModel();
-        this.canvasController.redrawCanvas();
+        this.canvasController.drawModel(this.model);
         this.populationGraphController.resetGraph();
         this.populationGraphController.plotPopulation(this.model);
     }
