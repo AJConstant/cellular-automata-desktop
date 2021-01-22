@@ -5,23 +5,21 @@ import domain.automata_model.AutomataModel;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
+import java.util.BitSet;
 
+// TODO Javadoc pls
 public class GenerationRule {
     public static void generateForRules(AutomataModel model, int ruleNum) throws IllegalArgumentException {
         if(model == null){ throw new IllegalArgumentException("Model is null"); }
+        if(ruleNum < 0 || ruleNum > model.getAutomataType().getRuleNumMax()){ throw new IllegalArgumentException("Improper rule selected"); }
         boolean[] nextGen;
-        boolean[] ruleBoolean;
+        boolean[] ruleBitset = ruleBitset(ruleNum, model.getAutomataType());
         switch(model.getAutomataType()){
             case TimeSeries1D:
-                if(ruleNum < 0 || ruleNum > 255){ throw new IllegalArgumentException("Improper rule selected"); }
                 nextGen = new boolean[AutomataModel.MAX_WIDTH];
-                ruleBoolean = ruleBoolean(ruleNum);
                 for(int i=0; i<AutomataModel.MAX_WIDTH; i++){
                     ArrayList<Boolean> neighbors = getNeighbors1D(model, i);
-                    nextGen[i] = doRules1D(ruleBoolean, neighbors);
+                    nextGen[i] = doRules1D(ruleBitset, neighbors);
                 }
                 for(int i=0; i<AutomataModel.MAX_WIDTH; i++){
                     if (nextGen[i]) {
@@ -31,13 +29,11 @@ public class GenerationRule {
                     }
                 }
                 break;
-            case TimeSeries2D:
-                if(ruleNum < 0 || ruleNum > 255){ throw new IllegalArgumentException("Improper rule selected"); }
+            case TimeSeries2DFourNeighbor:
                 nextGen = new boolean[AutomataModel.MAX_WIDTH*AutomataModel.MAX_WIDTH];
-                ruleBoolean = ruleBoolean(ruleNum);
-                for(int i=0; i<AutomataModel.MAX_WIDTH*AutomataModel.MAX_WIDTH; i++){
-                    int neighborSum = getNeighbors2D(model, i);
-                    nextGen[i] = doRules2D(ruleBoolean, neighborSum);
+                for(int i=0; i<AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT; i++){
+                    int neighborSum = getFourNeighbors2D(model, i);
+                    nextGen[i] = doRules2DFourNeighbor(ruleBitset, neighborSum, model.contains(i));
                 }
                 for(int i=0; i < AutomataModel.MAX_WIDTH*AutomataModel.MAX_WIDTH; i++){
                     if(nextGen[i]){
@@ -47,8 +43,34 @@ public class GenerationRule {
                     }
                 }
                 break;
+            case TimeSeries2DEightNeighbor:
+                nextGen = new boolean[AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT];
+                for(int i=0; i<AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT; i++){
+                    int neighborSum = getEightNeighbors2D(model, i);
+                    nextGen[i] = doRules2DEightNeighbor(ruleBitset, neighborSum, model.contains(i));
+                }
+                for(int i=0; i < AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT; i++){
+                    if(nextGen[i]){
+                        model.addCell(i);
+                    } else {
+                        model.removeCell(i);
+                    }
+                }
+                break;
             case GameOfLife:
-                throw new IllegalArgumentException("Game of Life is Unimplemented");
+                nextGen = new boolean[AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT];
+                for(int i=0; i<AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT; i++){
+                    int neighborSum = getEightNeighbors2D(model, i);
+                    nextGen[i] = doRulesConway(neighborSum, model.contains(i));
+                }
+                for(int i=0; i < AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT; i++){
+                    if(nextGen[i]){
+                        model.addCell(i);
+                    } else {
+                        model.removeCell(i);
+                    }
+                }
+                break;
         }
     }
 
@@ -61,11 +83,21 @@ public class GenerationRule {
         return neighbors;
     }
 
-    // Note - we're doing the conway's game of life version, with totalistic models
-    // Otherwise we'll have WAY too many rules here
-    //TODO: non-totalistic model - is it feasible?
-    private static int getNeighbors2D(AutomataModel model, int cellID){
-        //Note: Order of adding is important! Clockwise from top
+    private static int getFourNeighbors2D(AutomataModel model, int cellID){
+        int neighborSum = 0;
+        int col = cellID % AutomataModel.MAX_WIDTH;
+        int lCol = (cellID - 1)%AutomataModel.MAX_WIDTH;
+        int rCol = (cellID + 1)%AutomataModel.MAX_WIDTH;
+
+        neighborSum += (model.contains(cellID - AutomataModel.MAX_WIDTH)) ? 1: 0; // Top
+        neighborSum += (model.contains(cellID + 1) && rCol > col)? 1: 0; // Right
+        neighborSum += (model.contains(cellID + AutomataModel.MAX_WIDTH))? 1: 0; // Bottom
+        neighborSum += (model.contains(cellID -1) && lCol < col)? 1: 0; // Left
+
+        return neighborSum;
+    }
+
+    private static int getEightNeighbors2D(AutomataModel model, int cellID){
         int neighborSum = 0;
         int col = cellID % AutomataModel.MAX_WIDTH;
         int lCol = (cellID - 1)%AutomataModel.MAX_WIDTH;
@@ -83,46 +115,99 @@ public class GenerationRule {
         return neighborSum;
     }
 
-    private static boolean[] ruleBoolean(int ruleNum){
-        boolean[] ruleBool = new boolean[8];
-        int num = ruleNum;
-        for(int i= 7; i >= 0; i--){
-            ruleBool[i] = (num % 2) == 1;
-            num = num / 2;
+    private static boolean[] ruleBitset(int ruleNum, AutomataType type){
+        if(type == null) { throw new IllegalArgumentException("Invalid Automata Type"); }
+        boolean[] rules = new boolean[type.getRulesetSize()];
+        for(int i= type.getRulesetSize()-1; i >= 0; i--){
+            rules[i] = ((ruleNum % 2) == 1);
+            ruleNum = ruleNum >>> 1;
         }
-        return ruleBool;
+        return rules;
     }
 
-    private static boolean doRules1D(boolean[] ruleBool, ArrayList<Boolean> neighbors) throws IllegalArgumentException {
+    /**
+     * Returns true if cell should be alive next generation, false otherwise
+     * @param neighbors
+     * @return true if cell should be alive next generation, false otherwise
+     * @throws IllegalArgumentException
+     */
+    // TODO abstract num neighbors
+    private static boolean doRules1D(boolean[] rules, ArrayList<Boolean> neighbors) throws IllegalArgumentException {
+        if(rules.length != (AutomataType.TimeSeries1D.getRulesetSize())){ throw new IllegalArgumentException("Improper Rules For 1D Time Series"); }
         if(neighbors.size() != 3){ throw new IllegalArgumentException("Neighbor array improperly shaped"); }
         boolean left = neighbors.get(0);
         boolean top = neighbors.get(1);
         boolean right = neighbors.get(2);
-        return ((ruleBool[0] && (left && top && right)) ||
-                (ruleBool[1] && (left && top && !right)) ||
-                (ruleBool[2] && (left && !top && right)) ||
-                (ruleBool[3] && (left && !top && !right)) ||
-                (ruleBool[4] && (!left && top && right)) ||
-                (ruleBool[5] && (!left && top && !right)) ||
-                (ruleBool[6] && (!left && !top && right)) ||
-                (ruleBool[7] && (!left && !top && !right)));
+        return ((rules[0] && (left && top && right)) ||
+                (rules[1] && (left && top && !right)) ||
+                (rules[2] && (left && !top && right)) ||
+                (rules[3] && (left && !top && !right)) ||
+                (rules[4] && (!left && top && right)) ||
+                (rules[5] && (!left && top && !right)) ||
+                (rules[6] && (!left && !top && right)) ||
+                (rules[7] && (!left && !top && !right)));
     }
 
-    // This will NOT create Conway's Game of Life, which has different rules for alive and dead cells
-    // These rules are totalistic, so we will not define different rules for different cells
-    private static boolean doRules2D(boolean[] ruleBool, int neighborSum) throws IllegalArgumentException {
+    /**
+     * Returns true if cell should be alive next generation, false otherwise
+     * @param neighborSum
+     * @param alive
+     * @return true if cell should be alive next generation, false otherwise
+     * @throws IllegalArgumentException
+     */
+    private static boolean doRules2DFourNeighbor(boolean[] rules, int neighborSum, boolean alive) throws IllegalArgumentException {
+        if(rules.length != (AutomataType.TimeSeries2DFourNeighbor.getRulesetSize())){ throw new IllegalArgumentException("Improper Rules For 2D Time Series Four Neighbor"); }
+        if(neighborSum < 0 || neighborSum > 4) { throw new IllegalArgumentException("Neighbors improperly calculated"); }
+        if(alive){
+            return ((rules[0] && neighborSum == 4) ||
+                    (rules[2] && neighborSum == 3) ||
+                    (rules[4] && neighborSum == 2) ||
+                    (rules[6] && neighborSum == 1) ||
+                    (rules[8] && neighborSum == 0));
+        } else {
+            return ((rules[1] && neighborSum == 4) ||
+                    (rules[3] && neighborSum == 3) ||
+                    (rules[5] && neighborSum == 2) ||
+                    (rules[7] && neighborSum == 1) ||
+                    (rules[9] && neighborSum == 0));
+        }
+    }
+
+    /**
+     *
+     * @param rules
+     * @param neighborSum
+     * @param alive
+     * @return
+     * @throws IllegalArgumentException
+     */
+    private static boolean doRules2DEightNeighbor(boolean[] rules, int neighborSum, boolean alive) throws IllegalArgumentException {
+        if(rules.length != (AutomataType.TimeSeries2DEightNeighbor.getRulesetSize())){ throw new IllegalArgumentException("Improper Rules For 2D Time Series Eight Neighbor"); }
         if(neighborSum < 0 || neighborSum > 8) { throw new IllegalArgumentException("Neighbors improperly calculated"); }
-        return ((ruleBool[0] && (neighborSum == 0)) ||
-                (ruleBool[1] && (neighborSum == 1)) ||
-                (ruleBool[2] && (neighborSum == 2)) ||
-                (ruleBool[3] && (neighborSum == 3)) ||
-                (ruleBool[4] && (neighborSum == 4)) ||
-                (ruleBool[5] && (neighborSum == 5)) ||
-                (ruleBool[6] && (neighborSum == 6)) ||
-                (ruleBool[7] && (neighborSum == 7)));
+        if(alive){
+            return ((rules[0] && neighborSum == 8)   ||
+                    (rules[2] && neighborSum == 7)   ||
+                    (rules[4] && neighborSum == 6)   ||
+                    (rules[6] && neighborSum == 5)   ||
+                    (rules[8] && neighborSum == 4)  ||
+                    (rules[10] && neighborSum == 3)  ||
+                    (rules[12] && neighborSum == 2)  ||
+                    (rules[14] && neighborSum == 1)  ||
+                    (rules[16] && neighborSum == 0));
+        } else {
+            return ((rules[1] && neighborSum == 8)   ||
+                    (rules[3] && neighborSum == 7)   ||
+                    (rules[5] && neighborSum == 6)   ||
+                    (rules[7] && neighborSum == 5)   ||
+                    (rules[9] && neighborSum == 4)   ||
+                    (rules[11] && neighborSum == 3)  ||
+                    (rules[13] && neighborSum == 2)  ||
+                    (rules[15] && neighborSum == 1)  ||
+                    (rules[17] && neighborSum == 0));
+        }
     }
 
     private static boolean doRulesConway(int neighborSum, boolean alive) throws IllegalArgumentException {
-        return false;
+        return doRules2DEightNeighbor(ruleBitset(224, AutomataType.GameOfLife), neighborSum, alive);
     }
 }

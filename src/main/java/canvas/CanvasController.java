@@ -57,8 +57,10 @@ public class CanvasController implements Initializable {
                     }
                 }
                 break;
-            case TimeSeries2D:
-                for(int i=0; i < AutomataModel.MAX_WIDTH*AutomataModel.MAX_WIDTH; i++){
+            case TimeSeries2DFourNeighbor:
+            case TimeSeries2DEightNeighbor:
+            case GameOfLife:
+                for(int i=0; i < AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT; i++){
                     if(this.model.contains(i)){
                         drawCell2D(i, foreground);
                     } else {
@@ -66,27 +68,32 @@ public class CanvasController implements Initializable {
                     }
                 }
                 break;
-            case GameOfLife:
-                break;
         }
     }
 
-    public void drawCell1D(Integer cellID, Integer genNumber, Paint p) throws IllegalStateException {
+    private void drawCell1D(Integer cellID, Integer genNumber, Paint p) throws IllegalStateException {
         if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
-        double ppc = this.canvas.getWidth() / AutomataModel.MAX_WIDTH;
+        int ppc = (int)(this.canvas.getWidth() / AutomataModel.MAX_WIDTH);
         GraphicsContext gc = this.canvas.getGraphicsContext2D();
         gc.setFill(p);
         gc.fillRect(cellID*ppc, genNumber*ppc, ppc, ppc);
     }
 
-    public void drawCell2D(Integer cellID, Paint p) throws IllegalStateException {
+    private void drawCell2D(Integer cellID, Paint p) throws IllegalStateException {
         if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
-        double ppc = this.canvas.getWidth() / AutomataModel.MAX_WIDTH;
+        int ppc = (int)(this.canvas.getWidth() / AutomataModel.MAX_WIDTH);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         int row = cellID / AutomataModel.MAX_WIDTH;
         int col = cellID % AutomataModel.MAX_WIDTH;
         gc.setFill(p);
         gc.fillRect(col * ppc, row * ppc, ppc, ppc);
+    }
+
+    public void resetCanvas(){
+        if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
+        GraphicsContext gc = this.canvas.getGraphicsContext2D();
+        gc.setFill(background);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
     @FXML

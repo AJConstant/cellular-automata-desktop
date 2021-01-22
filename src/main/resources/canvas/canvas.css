@@ -1,8 +1,8 @@
 .canvas-background {
-    min-width: 600;
-    max-width: 600;
-    min-height: 600;
-    max-height: 600;
+    min-width: 500;
+    max-width: 1000;
+    min-height: 500;
+    max-height: 1000;
 }
 
 .light-canvas {

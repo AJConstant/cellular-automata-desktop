@@ -8,13 +8,13 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox fx:id="sidePanel" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="250.0" styleClass="side-panel" stylesheets="@drawer.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="drawer.DrawerController">
+<VBox fx:id="sidePanel" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="200.0" styleClass="side-panel" stylesheets="@drawer.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="drawer.DrawerController">
    <children>
       <TextFlow prefHeight="150.0" prefWidth="200.0" textAlignment="CENTER">
          <children>
-            <Text fill="#17252a" strokeType="OUTSIDE" strokeWidth="0.0" text="CONWAY'S GAME OF LIFE" textAlignment="CENTER">
+            <Text fill="#17252a" strokeType="OUTSIDE" strokeWidth="0.0" text="CELLULAR AUTOMATA" textAlignment="CENTER">
                <font>
-                  <Font size="35.0" />
+                  <Font size="30.0" />
                </font>
             </Text>
          </children>
