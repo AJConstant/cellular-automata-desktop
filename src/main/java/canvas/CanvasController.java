@@ -1,6 +1,8 @@
 package canvas;
 
-import domain.AutomataModel;
+import domain.GenerationRule;
+import domain.automata_model.AutomataModel;
+import domain.automata_model.AutomataModelImpl;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -26,44 +28,84 @@ public class CanvasController implements Initializable {
     @FXML
     private Pane canvasBackground;
 
-    private AutomataModel model;
+    private AutomataModelImpl model;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.canvasBackground.getStyleClass().add("light-canvas");
     }
 
-    public void initModel(AutomataModel model) {
+    /**
+     * The canvas controller contains a reference to the current model
+     * so that it can add cells via clicking on the board
+     * @param model
+     */
+    public void initModel(AutomataModelImpl model) {
         this.model = model;
     }
 
-    public void drawCell(Integer cellID, Paint p) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        int row = cellID / 100;
-        int col = cellID % 100;
+    public void drawModel(AutomataModelImpl model) throws IllegalStateException {
+        if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
+        switch(model.getAutomataType()){
+            case TimeSeries1D:
+                int row = model.getGenerationNumber();
+                for(int i = 0; i < AutomataModel.MAX_WIDTH; i++){
+                    if(this.model.contains(i)){
+                        this.drawCell1D(i, row, foreground);
+                    } else {
+                        this.drawCell1D(i, row, background);
+                    }
+                }
+                break;
+            case TimeSeries2DFourNeighbor:
+            case TimeSeries2DEightNeighbor:
+            case GameOfLife:
+                for(int i=0; i < AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT; i++){
+                    if(this.model.contains(i)){
+                        drawCell2D(i, foreground);
+                    } else {
+                        drawCell2D(i, background);
+                    }
+                }
+                break;
+        }
+    }
+
+    private void drawCell1D(Integer cellID, Integer genNumber, Paint p) throws IllegalStateException {
+        if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
+        int ppc = (int)(this.canvas.getWidth() / AutomataModel.MAX_WIDTH);
+        GraphicsContext gc = this.canvas.getGraphicsContext2D();
         gc.setFill(p);
-        gc.fillRect(col * 6, row * 6, 6, 6);
+        gc.fillRect(cellID*ppc, genNumber*ppc, ppc, ppc);
+    }
+
+    private void drawCell2D(Integer cellID, Paint p) throws IllegalStateException {
+        if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
+        int ppc = (int)(this.canvas.getWidth() / AutomataModel.MAX_WIDTH);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        int row = cellID / AutomataModel.MAX_WIDTH;
+        int col = cellID % AutomataModel.MAX_WIDTH;
+        gc.setFill(p);
+        gc.fillRect(col * ppc, row * ppc, ppc, ppc);
+    }
+
+    public void resetCanvas(){
+        if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
+        GraphicsContext gc = this.canvas.getGraphicsContext2D();
+        gc.setFill(background);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
     @FXML
-    public void drawSingleAutomata(MouseEvent event) {
+    public void drawSingleAutomata(MouseEvent event) throws IllegalStateException {
+        if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
         double x, y;
         x = event.getX();
         y = event.getY();
         int col = (int) x / 6;
         int row = (int) y / 6;
         Integer cellID = col + 100 * row;
-        this.model.add(cellID);
-        this.redrawCanvas();
-    }
-
-    public void redrawCanvas(){
-        for(int i=0; i < 10000; i++){
-            if(this.model.contains(i)){
-                drawCell(i, foreground);
-            } else {
-                drawCell(i, background);
-            }
-        }
+        this.model.addCell(cellID);
+        this.drawModel(this.model);
     }
 }

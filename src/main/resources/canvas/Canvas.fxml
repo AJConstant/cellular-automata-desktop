@@ -3,8 +3,8 @@
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane fx:id="canvasBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" styleClass="canvas-background" stylesheets="@canvas.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="canvas.CanvasController">
+<Pane fx:id="canvasBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" styleClass="canvas-background" stylesheets="@canvas.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="canvas.CanvasController">
    <children>
-        <Canvas fx:id="canvas" height="600.0" nodeOrientation="INHERIT" onMouseClicked="#drawSingleAutomata" width="600.0" />
+        <Canvas fx:id="canvas" height="500.0" nodeOrientation="INHERIT" onMouseClicked="#drawSingleAutomata" width="1000.0" />
    </children>
 </Pane>

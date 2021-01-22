@@ -1,25 +1,29 @@
 package root;
 
 import canvas.CanvasController;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
-import domain.AutomataModel;
+import domain.AutomataType;
+import domain.GenerationRule;
+import domain.automata_model.AutomataModel;
+import domain.automata_model.AutomataModelImpl;
 import graphing.PopulationGraphController;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
-import javafx.util.Duration;
 
+import javax.swing.text.AbstractDocument;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -54,28 +58,34 @@ public class MainController implements Initializable {
     private JFXDrawer drawer;
 
     @FXML
+    private JFXTextField ruleNumber;
+
+    @FXML
     private JFXHamburger menuButton;
+
+    @FXML
+    private JFXComboBox<AutomataType> automataTypeComboBox;
 
     private Long TIME;
 
-    private AutomataModel model = new AutomataModel();
+    private AutomataModelImpl model;
 
     private AtomicBoolean animating;
-
-    private Task<Void> task;
-
-    private Timeline t;
 
     private HamburgerBackArrowBasicTransition menuTransition;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        this.animating = new AtomicBoolean(false);
+
+        this.model = new AutomataModelImpl(AutomataModel.INIT_AUTOMATA_TYPE, AutomataModel.INIT_RULE_NUM);
         this.canvasController.initModel(this.model);
         this.TIME = 50L;
 
+        // Initialize drawer
         menuTransition = new HamburgerBackArrowBasicTransition(menuButton);
         menuTransition.setRate(-1);
-
         try {
             VBox sidePanelContent = FXMLLoader.load(getClass().getResource("../drawer/Drawer.fxml"));
             drawer.setSidePane(sidePanelContent);
@@ -83,7 +93,42 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
 
-        this.animating = new AtomicBoolean(false);
+        // Initialize rule number control
+        ruleNumber.setText(Integer.toString(AutomataModel.INIT_RULE_NUM));
+        ruleNumber.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                try{
+                    if(Integer.parseInt(newValue) < 0 || Integer.parseInt(newValue) > model.getAutomataType().getRuleNumMax()){
+                        ruleNumber.setText("");
+                    } else {
+                        model.setRuleNumber(Integer.parseInt(newValue));
+                    }
+                } catch (NumberFormatException e){
+                    ruleNumber.setText("");
+                }
+
+            }
+        });
+
+        //Initialize combo box control
+        this.automataTypeComboBox.getItems().setAll(AutomataType.values());
+        this.automataTypeComboBox.valueProperty().setValue(AutomataModel.INIT_AUTOMATA_TYPE);
+        this.automataTypeComboBox.valueProperty().addListener(new ChangeListener<AutomataType>() {
+            @Override
+            public void changed(ObservableValue<? extends AutomataType> observable, AutomataType oldValue, AutomataType newValue) {
+                model.setAutomataType(newValue);
+                if(newValue == AutomataType.GameOfLife){
+                    ruleNumber.textProperty().setValue("224");
+                    ruleNumber.setDisable(true);
+                } else {
+                    ruleNumber.setDisable(false);
+                }
+                reset(null);
+            }
+        });
+
+        this.canvasController.drawModel(this.model);
     }
 
     @FXML
@@ -111,21 +156,21 @@ public class MainController implements Initializable {
                 new Thread(new Task<Void>() {
                             @Override
                             protected Void call() throws Exception {
-                                while(animating.get()){
-                                    try{
-                                        model.incrementGeneration();
-                                        Platform.runLater(() -> {
-                                            populationGraphController.plotPopulation(model);
-                                            canvasController.redrawCanvas();
-                                        });
-                                        Thread.sleep(TIME);
-                                    } catch (InterruptedException e) {
-                                        if(isCancelled()){
-                                            break;
-                                        }
-                                    }
-                                }
-                                return null;
+                    while(animating.get()){
+                        try{
+                            model.incrementGeneration();
+                            Platform.runLater(() -> {
+                                populationGraphController.plotPopulation(model);
+                                canvasController.drawModel(model);
+                            });
+                            Thread.sleep(TIME);
+                        } catch (InterruptedException e) {
+                            if(isCancelled()){
+                                break;
+                            }
+                        }
+                    }
+                    return null;
                             }
                 }).start();
 
@@ -141,14 +186,15 @@ public class MainController implements Initializable {
     @FXML
     public void advanceGeneration(ActionEvent actionEvent){
         this.model.incrementGeneration();
-        this.canvasController.redrawCanvas();
+        this.canvasController.drawModel(this.model);
         this.populationGraphController.plotPopulation(this.model);
     }
 
     @FXML
     public void randomize(ActionEvent actionEvent) {
         this.model.randomizeModel();
-        this.canvasController.redrawCanvas();
+        this.canvasController.resetCanvas();
+        this.canvasController.drawModel(this.model);
         this.populationGraphController.resetGraph();
         this.populationGraphController.plotPopulation(this.model);
     }
@@ -156,7 +202,8 @@ public class MainController implements Initializable {
     @FXML
     public void reset(ActionEvent actionEvent) {
         this.model.resetModel();
-        this.canvasController.redrawCanvas();
+        this.canvasController.resetCanvas();
+        this.canvasController.drawModel(this.model);
         this.populationGraphController.resetGraph();
         this.populationGraphController.plotPopulation(this.model);
     }
@@ -169,6 +216,31 @@ public class MainController implements Initializable {
             this.drawer.close();
         } else if (this.drawer.isClosed()){
             this.drawer.open();
+        }
+    }
+
+    public void advance30Generations(ActionEvent actionEvent) {
+        if(this.model.getAutomataType() == AutomataType.TimeSeries1D){
+            for(int i=0; i < 30; i++){
+                this.advanceGeneration(null);
+            }
+        } else {
+            this.model.incrementGeneration(30);
+            this.canvasController.drawModel(this.model);
+            this.populationGraphController.plotPopulation(this.model);
+        }
+    }
+
+    @FXML
+    public void advance10Generations(ActionEvent actionEvent) {
+        if(this.model.getAutomataType() == AutomataType.TimeSeries1D){
+            for(int i=0; i < 10; i++){
+                this.advanceGeneration(null);
+            }
+        } else {
+            this.model.incrementGeneration(10);
+            this.canvasController.drawModel(this.model);
+            this.populationGraphController.plotPopulation(this.model);
         }
     }
 }

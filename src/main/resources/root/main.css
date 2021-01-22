@@ -6,3 +6,33 @@
 .chart-series-line {
     -fx-stroke: #DEF2F1;
 }
+
+.mainWindow {
+
+}
+
+.mainAnchor {
+    -fx-background-color: #17252A;
+}
+
+
+.text-input {
+    -fx-text-fill: #feffff;
+    -fx-prompt-text-fill: #feffff;
+    -fx-border-insets: 10px;
+    -fx-background-insets: 10px;
+}
+
+.label {
+    -fx-text-fill: #feffff;
+}
+
+.jfx-combo-box > .label {
+    -fx-text-fill: #17252a;
+}
+
+.jfx-combo-box {
+    -fx-prompt-text-fill: #feffff;
+    -fx-focus-color: #feffff;
+    -fx-unfocus-color: #17252A;
+}

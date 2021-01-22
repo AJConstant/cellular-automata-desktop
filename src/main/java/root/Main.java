@@ -1,6 +1,5 @@
 package root;
 
-import domain.AutomataModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +15,7 @@ public class Main extends Application {
         Logger logger = Logger.getLogger("root.Main");
         Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
 
-        Scene scene = new Scene(root, 1280, 720);
+        Scene scene = new Scene(root, 1380, 900);
         primaryStage.setScene(scene);
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
