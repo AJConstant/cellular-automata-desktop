@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="470.0" styleClass="dashboard-pane" stylesheets="@../Visualizer.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graphing.PopulationGraphController">
+   <children>
+      <ToolBar minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="470.0" styleClass="dashboard-toolbar">
+         <items>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="toolbar-title" text="Generation Vs. Population" />
+         </items>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </ToolBar>
+      <LineChart fx:id="populationGraph" alternativeRowFillVisible="false" animated="false" createSymbols="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" legendVisible="false" prefHeight="430.0" prefWidth="500.0" styleClass="population-chart" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
+        <xAxis>
+          <NumberAxis animated="false" forceZeroInRange="false" minorTickVisible="false" prefHeight="0.0" prefWidth="0.0" side="BOTTOM" tickLabelsVisible="false" tickMarkVisible="false" visible="false" fx:id="xAxis" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="yAxis" animated="false" minorTickVisible="false" prefHeight="0.0" prefWidth="0.0" side="LEFT" tickLabelsVisible="false" tickMarkVisible="false" />
+        </yAxis>
+      </LineChart>
+   </children>
+</VBox>

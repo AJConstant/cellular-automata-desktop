@@ -1,93 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.SVGPath?>
 
-<?import javafx.scene.layout.HBox?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import javafx.scene.text.TextFlow?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.control.Label?>
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<StackPane styleClass="mainWindow"
-           prefHeight="1600.0"
-           prefWidth="1600.0"
-           stylesheets="@main.css"
-           xmlns="http://javafx.com/javafx/11.0.1"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="root.MainController">
+<AnchorPane styleClass="root-matte-colorful" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="root.MainController">
    <children>
-      <AnchorPane styleClass="mainAnchor">
-         <children>
-            <VBox alignment="TOP_RIGHT"  prefHeight="720.0" prefWidth="355.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <fx:include fx:id="canvas" source="../canvas/Canvas.fxml" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
-                  <HBox alignment="CENTER_LEFT">
+      <JFXTabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="900.0" prefWidth="1600.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="80.0" tabMaxWidth="1600.0" tabMinHeight="80.0">
+         <tabs>
+            <Tab fx:id="titleTab" disable="true" styleClass="title-tab" text="CellularAutomata" />
+            <Tab styleClass="standard-tab" text="Automata Visualizer">
+              <content>
+                  <AnchorPane>
                      <children>
-                        <fx:include fx:id="populationGraph" source="../graphing/PopulationGraph.fxml"> </fx:include>
-                        <VBox alignment="CENTER_RIGHT" prefWidth="300">
-                           <children>
-                              <JFXButton fx:id="togglePlaybackButton" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" graphicTextGap="20.0" onAction="#togglePlayback" prefHeight="50" prefWidth="300" styleClass="button, light-button" text="PLAY" textFill="#feffff">
-                                 <graphic>
-                                    <SVGPath fx:id="togglePlaybackSVG" content="M8 5v14l11-7z" fill="#feffff" />
-                                 </graphic></JFXButton>
-                              <JFXButton fx:id="advanceGenerationButton" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" graphicTextGap="20.0" onAction="#advanceGeneration" prefHeight="50" prefWidth="300" styleClass="button, light-button" text="ADVANCE GENERATION" textFill="#feffff">
-                                 <graphic>
-                                    <SVGPath content="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" fill="#feffff" />
-                                 </graphic></JFXButton>
-                              <JFXButton fx:id="randomizeBoardButton" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" graphicTextGap="20.0" onAction="#randomize" prefHeight="50" prefWidth="300" styleClass="button, light-button" text="RANDOMIZE" textFill="#feffff">
-                                 <graphic>
-                                    <SVGPath content="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" fill="#feffff" />
-                                 </graphic>
-                              </JFXButton>
-                              <JFXButton fx:id="resetButton" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" graphicTextGap="20.0" onAction="#reset" prefHeight="50" prefWidth="300" styleClass="button, light-button" text="RESET MODEL" textFill="#feffff">
-                                 <graphic>
-                                    <SVGPath content="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="#feffff" />
-                                 </graphic>
-                              </JFXButton>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER_RIGHT" prefWidth="300">
-                           <children>
-                              <HBox prefWidth="300" prefHeight="50" alignment="CENTER_RIGHT">
-                                 <children>
-                                    <Label text="RULE NUMBER: "></Label>
-                                    <JFXTextField fx:id="ruleNumber" prefWidth="75"></JFXTextField>
-                                 </children>
-                              </HBox>
-                              <HBox prefWidth="300" prefHeight="50" alignment="CENTER_RIGHT">
-                                 <children>
-                                    <Label text="AUTOMATA TYPE: "></Label>
-                                    <JFXComboBox fx:id="automataTypeComboBox" prefWidth="125">
-                                    </JFXComboBox>
-                                 </children>
-                              </HBox>
-                              <JFXButton fx:id="advance10Generations" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" graphicTextGap="20.0" onAction="#advance10Generations" prefHeight="50" prefWidth="300" styleClass="button, light-button" text="ADVANCE 10 GENERATIONS" textFill="#feffff">
-                              </JFXButton>
-                              <JFXButton fx:id="advance30Generations" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" graphicTextGap="20.0" onAction="#advance30Generations" prefHeight="50" prefWidth="300" styleClass="button, light-button" text="ADVANCE 30 GENERATIONS" textFill="#feffff">
-                              </JFXButton>
-                           </children>
-                        </VBox>
+                        <AnchorPane layoutX="30.0" styleClass="graph-pane" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
+                            <children>
+                                <fx:include fx:id="populationGraph" source="../visualizer/graphing-pane/GraphingPane.fxml" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="542.0" styleClass="canvas-pane" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+                            <children>
+                                <fx:include fx:id="canvas" source="../visualizer/canvas-pane/CanvasPane.fxml" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="31.0" layoutY="519.0" styleClass="automata-choice-pane" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="30.0">
+                            <children>
+                                <fx:include fx:id="automataChoice" source="../visualizer/automata-choice-pane/AutomataChoicePane.fxml" />
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="542.0" layoutY="640.0" styleClass="simulation-pane" AnchorPane.bottomAnchor="60.0" AnchorPane.rightAnchor="30.0">
+                            <children>
+                                <fx:include fx:id="simulation" source="../visualizer/simulation-pane/SimulationPane.fxml" />
+                            </children>
+                        </AnchorPane>
                      </children>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets left="15.0" right="15.0" top="50.0" />
-               </padding>
-            </VBox>
-            <JFXHamburger fx:id="menuButton" fillWidth="false" layoutX="1041.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#toggleDrawer" prefHeight="20.0" prefWidth="25.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
-
-         </children>
-      </AnchorPane>
-      <JFXDrawer fx:id="drawer" defaultDrawerSize="200.0" maxWidth="-Infinity" prefHeight="720.0" prefWidth="250.0" StackPane.alignment="CENTER_LEFT" />
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab styleClass="standard-tab" text="1D Cellular Automata">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab styleClass="standard-tab" text="2D Cellular Automata">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab styleClass="standard-tab" text="Conway's Game of Life">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+         </tabs>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </JFXTabPane>
+      <Button fx:id="exitButton" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#closeApplication" prefHeight="24.0" prefWidth="24.0" styleClass="exit-button" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="28.0" />
    </children>
-</StackPane>
+</AnchorPane>

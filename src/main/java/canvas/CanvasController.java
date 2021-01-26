@@ -1,6 +1,5 @@
 package canvas;
 
-import domain.GenerationRule;
 import domain.automata_model.AutomataModel;
 import domain.automata_model.AutomataModelImpl;
 import javafx.fxml.FXML;
@@ -8,9 +7,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 
@@ -19,20 +18,23 @@ import java.util.ResourceBundle;
 
 public class CanvasController implements Initializable {
 
-    public static Color background = Color.web("#DEF2F1");
-    public static Color foreground = Color.web("#2B7A78");
+    public static Color background = Color.web("#222629");
+    public static Color foreground = Color.web("#6b6e70");
 
     @FXML
     private Canvas canvas;
 
     @FXML
-    private Pane canvasBackground;
+    private Text populationText;
+
+    @FXML
+    private Text generationText;
 
     private AutomataModelImpl model;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.canvasBackground.getStyleClass().add("light-canvas");
+
     }
 
     /**
@@ -41,11 +43,15 @@ public class CanvasController implements Initializable {
      * @param model
      */
     public void initModel(AutomataModelImpl model) {
+        this.populationText.setText("Population: 0");
+        this.generationText.setText("Generation: 0");
         this.model = model;
     }
 
     public void drawModel(AutomataModelImpl model) throws IllegalStateException {
         if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
+        this.populationText.setText("Population: " + model.getPopulation());
+        this.generationText.setText("Generation: " + model.getGenerationNumber());
         switch(model.getAutomataType()){
             case TimeSeries1D:
                 int row = model.getGenerationNumber();

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:controller="automatachoice.AutomataChoiceController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../Visualizer.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <styleClass>
+      <String fx:value="automata-choice-pane" />
+      <String fx:value="dashboard-pane" />
+   </styleClass>
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="dashboard-hbox">
+         <children>
+            <Label contentDisplay="RIGHT" styleClass="dashboard-label" text="Automata Type:" textFill="#effeff">
+               <graphic>
+                  <JFXComboBox fx:id="automataChoice"/>
+               </graphic>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="dashboard-hbox">
+         <children>
+            <Label contentDisplay="RIGHT" styleClass="dashboard-label" text="Rule Number:" textFill="#effeff">
+               <graphic>
+                  <JFXTextField fx:id="ruleNumber" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+               </graphic>
+            </Label>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" styleClass="dashboard-hbox">
+         <children>
+            <Label styleClass="dashboard-label" text="Initial Conditions">
+               <graphic>
+                  <JFXComboBox fx:id="initialConditions"/>
+               </graphic>
+            </Label>
+         </children>
+      </HBox>
+   </children>
+</VBox>

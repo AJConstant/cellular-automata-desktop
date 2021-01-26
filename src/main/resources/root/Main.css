@@ -1,0 +1,100 @@
+/* Base dark is darkest, then 2, then 3, then accent is lightest, then 2 */
+.root-green-dark {
+    -base: #222629;
+    -base-2: #474b4f;
+    -base-3: #6b6e70;
+    -accent: #86c232;
+    -accent-2: #61892F;
+    -text-color: #FFFFFF;
+}
+
+.root-matte-colorful {
+    -base: #A8D0E6;
+    -base-2: #374785;
+    -base-3: #24305E;
+    -accent: #F76C6C;
+    -accent-2: #F8E9A1;
+    -text-color: #FFFFFF;
+}
+
+
+.jfx-tab-pane {
+    -fx-background-color: -base;
+}
+
+.jfx-tab-pane .headers-region {
+    -fx-alignment: center;
+    -fx-background-color: -base-3;
+}
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: -base-3;
+}
+
+.jfx-tab-pane .tab-header-area .jfx-rippler {
+    -jfx-rippler-fill: -accent-2;
+}
+
+.masonry-background {
+    -fx-pref-height: 820;
+    -fx-pref-width: 1600;
+    -fx-background-color: -base;
+}
+
+.fx-text-flow {
+    -fx-text-alignment: center;
+}
+
+.exit-button-tab {
+    -fx-pref-width: 270;
+}
+
+.title-tab {
+    -fx-pref-width: 400;
+}
+
+.title-tab .tab-label {
+    -fx-font-size: 40px;
+}
+
+.standard-tab {
+    -fx-pref-width: 200;
+    -fx-pref-height: 80;
+}
+
+.graph-pane {
+    -fx-pref-width: 470;
+    -fx-pref-height: 470;
+    -fx-max-width: 470;
+    -fx-max-height: 470;
+    -fx-background-color: -fx-base;
+}
+
+.canvas-pane {
+    -fx-pref-width: 1040;
+    -fx-pref-height: 600;
+}
+
+.automata-choice-pane {
+    -fx-pref-width: 470;
+    -fx-pref-height: 230;
+}
+
+.simulation-pane {
+    -fx-pref-width: 1040;
+    -fx-pref-height: 100;
+}
+
+.exit-button {
+    -size: 24;
+    -fx-min-height: -size;
+    -fx-min-width: -size;
+    -fx-max-height: -size;
+    -fx-max-width: -size;
+    -fx-background-color: -accent;
+    -fx-shape: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z";
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: -accent;
+}
