@@ -1,0 +1,62 @@
+.automata-choice-pane {
+    -fx-pref-width: 470;
+    -fx-pref-height: 230;
+}
+
+.dashboard-hbox {
+    -fx-alignment: center_left;
+    -fx-pref-height: 100.0;
+    -fx-pref-width: 200.0;
+    -fx-background-color: -panel-color;
+    -fx-padding: 0 20 0 20;
+}
+
+.dashboard-toolbar{
+    -fx-background-color: -panel-header-color;
+    -fx-pref-height: 100;
+    -fx-padding: 0 20 0 20;
+}
+
+.dashboard-label {
+    -fx-font-size: 20px;
+    -fx-text-fill: -panel-title-text-color;
+    -fx-content-display: right;
+}
+
+.jfx-combo-box{
+    -jfx-focus-color: -tab-ripple-color;
+    -jfx-unfocus-color: -panel-color;
+    -fx-text-fill: -text-subtitle-color;
+}
+
+.combo-box-popup .list-view {
+    -fx-font-size: 16px;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: -panel-color;
+    -fx-text-fill: -panel-subtitle-text-color;
+}
+
+.combo-box .cell {
+    -fx-text-fill: -panel-subtitle-text-color;
+    -fx-font-size: 16px;
+}
+
+.jfx-text-field {
+    -jfx-focus-color: -tab-ripple-color;
+    -jfx-unfocus-color: -panel-color;
+    -fx-background-color: -panel-color;
+    -fx-font-size: 16px;
+    -fx-text-fill: -panel-subtitle-text-color;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover{
+    -fx-background-color: -tab-ripple-color;
+    -fx-text-fill: -panel-subtitle-text-color;
+}
+
+.icon {
+    -fx-fill: -icon-color;
+    -fx-stroke: -icon-color;
+}

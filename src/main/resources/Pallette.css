@@ -1,0 +1,103 @@
+/*
+    Palette Definitions
+
+    // HEADER & GENERAL//
+    -header-color
+    -tab-ripple-color
+    -underscore-select-color
+    -title-text-color
+    -tab-text-color
+    -icon-color
+    -background-color
+
+    // PANE GENERAL //
+    -panel-color
+    -panel-header-color
+    -panel-title-text-color
+    -panel-subtitle-text-color
+
+    // GRAPH COLORS //
+    -graph-background
+    -graph-line-color
+
+    // CANVAS COLORS //
+    -canvas-background
+    -canvas-automata
+*/
+
+
+/* https://visme.co/blog/website-color-schemes/ #27 */
+.root-green-dark {
+    -fx-font-family: "Agency FB";
+    -header-color: #474b4f;
+    -tab-ripple-color: #6b6e70;
+    -underscore-select-color: #86c232;
+    -title-text-color: #61892F;
+    -tab-text-color: #ffffff;
+    -icon-color: #86c232;
+    -background-color: #222629;
+
+    -panel-color: #474b4f;
+    -panel-header-color: #6b6e70;
+    -panel-title-text-color: #86c232;
+    -panel-subtitle-text-color: #ffffff;
+
+    -graph-background: #222629;
+    -graph-line-color: #86c232;
+
+    -canvas-background: #222629;
+    -canvas-automata: #6b6e70;
+}
+
+/* https://visme.co/blog/website-color-schemes/ #9*/
+.root-deep-blue {
+    -header-color: #282828;
+    -tab-ripple-color: #190061;
+    -underscore-select-color: #3500d3;
+    -title-text-color: #ffffff;
+    -tab-text-color: #ffffff;
+    -icon-color: #3500d3;
+    -background-color: #0F0032;
+
+    -panel-color: #282828;
+    -panel-header-color: #282828;
+    -panel-title-text-color: #ffffff;
+    -panel-subtitle-text-color: #ffffff;
+
+    -graph-background: #0c0032;
+    -graph-line-color: #3500d3;
+
+    -canvas-background: #0c0032;
+    -canvas-automata: #240090;
+}
+
+.root-red-velvet {
+    -base: #2f4454;
+    -base-2: #2e151b;
+    -base-3: #2e151b;
+    -accent: #DA7B93;
+    -accent-2: #2e151b;
+    -text-title-color: #DA7B93;
+    -text-subtitle-color: #DA7B93;
+
+    -header-color
+    -tab-ripple-color
+    -underscore-select-color
+    -title-text-color
+    -tab-text-color
+    -icon-color
+    -background-color
+
+    -panel-color
+    -panel-header-color
+    -panel-title-text-color
+    -panel-subtitle-text-color
+
+    -graph-background
+    -graph-line-color
+
+    -canvas-background
+    -canvas-automata
+}
+
+

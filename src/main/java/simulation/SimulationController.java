@@ -10,13 +10,18 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.shape.SVGPath;
+import settings.Palette;
+import settings.Settings;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SimulationController implements Initializable {
+    @FXML
+    private Parent simulation;
 
     @FXML
     JFXButton playButton;
@@ -52,6 +57,7 @@ public class SimulationController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.animating = new AtomicBoolean(false);
+        this.simulation.getStyleClass().add(Settings.getActivePalette().getCssName());
     }
 
     public void initCanvasController(CanvasController controller){
@@ -169,5 +175,10 @@ public class SimulationController implements Initializable {
             this.canvasController.drawModel(this.model);
             this.populationGraphController.plotPopulation(this.model);
         }
+    }
+
+    public void updateStyle(Palette oldStyle){
+        this.simulation.getStyleClass().remove(oldStyle.getCssName());
+        this.simulation.getStyleClass().add(Settings.getActivePalette().getCssName());
     }
 }

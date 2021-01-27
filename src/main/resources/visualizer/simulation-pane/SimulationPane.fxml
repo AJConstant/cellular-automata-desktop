@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
 
-<HBox fx:controller="simulation.SimulationController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../Visualizer.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="simulation" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="simulation.SimulationController">
    <styleClass>
       <String fx:value="simulation-pane" />
-      <String fx:value="dashboard-pane" />
    </styleClass>
    <children>
-      <JFXButton fx:id="playButton" graphicTextGap="0.0" text="Play" onAction="#togglePlayback" >
+      <JFXButton fx:id="playButton" graphicTextGap="0.0" onAction="#togglePlayback" text="Play">
          <graphic>
             <SVGPath fx:id="playButtonIcon" content="M8 5v14l11-7z" styleClass="icon" />
          </graphic>
@@ -24,18 +24,22 @@
             <String fx:value="play-icon" />
          </styleClass>
       </JFXButton>
-      <JFXButton fx:id="randomizeButton" styleClass="simulation-button" text="Randomize" onAction="#randomize">
+      <JFXButton fx:id="randomizeButton" onAction="#randomize" styleClass="simulation-button" text="Randomize">
          <graphic>
             <SVGPath content="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" styleClass="icon" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="resetButton" styleClass="simulation-button" text="Reset" onAction="#reset">
+      <JFXButton fx:id="resetButton" onAction="#reset" styleClass="simulation-button" text="Reset">
          <graphic>
             <SVGPath content="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" styleClass="icon" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="advanceGenButton" styleClass="simulation-button" text="Advance 1 Generation" wrapText="true" onAction="#advanceGeneration"/>
-      <JFXButton fx:id="advanceTenButton" styleClass="simulation-button" text="Advance 10 Generations" wrapText="true" onAction="#advance10Generations"/>
-      <JFXButton fx:id="advanceThirtyButton" styleClass="simulation-button" text="Advance 30 Generations" wrapText="true" onAction="#advance30Generations"/>
+      <JFXButton fx:id="advanceGenButton" onAction="#advanceGeneration" styleClass="simulation-button" text="Advance 1 Generation" wrapText="true" />
+      <JFXButton fx:id="advanceTenButton" onAction="#advance10Generations" styleClass="simulation-button" text="Advance 10 Generations" wrapText="true" />
+      <JFXButton fx:id="advanceThirtyButton" onAction="#advance30Generations" styleClass="simulation-button" text="Advance 30 Generations" wrapText="true" />
    </children>
+   <stylesheets>
+      <URL value="@SimulationPane.css" />
+      <URL value="@../../Pallette.css" />
+   </stylesheets>
 </HBox>

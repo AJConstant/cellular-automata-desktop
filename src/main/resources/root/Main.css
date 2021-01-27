@@ -1,48 +1,31 @@
 /* Base dark is darkest, then 2, then 3, then accent is lightest, then 2 */
-.root-green-dark {
-    -base: #222629;
-    -base-2: #474b4f;
-    -base-3: #6b6e70;
-    -accent: #86c232;
-    -accent-2: #61892F;
-    -text-color: #FFFFFF;
-}
-
-.root-matte-colorful {
-    -base: #A8D0E6;
-    -base-2: #374785;
-    -base-3: #24305E;
-    -accent: #F76C6C;
-    -accent-2: #F8E9A1;
-    -text-color: #FFFFFF;
-}
-
 
 .jfx-tab-pane {
-    -fx-background-color: -base;
+    -fx-background-color: -background-color;
 }
 
 .jfx-tab-pane .headers-region {
     -fx-alignment: center;
-    -fx-background-color: -base-3;
+    -fx-background-color: -header-color;
 }
 
 .jfx-tab-pane .tab-header-background {
-    -fx-background-color: -base-3;
+    -fx-background-color: -header-color;
 }
 
 .jfx-tab-pane .tab-header-area .jfx-rippler {
-    -jfx-rippler-fill: -accent-2;
-}
-
-.masonry-background {
-    -fx-pref-height: 820;
-    -fx-pref-width: 1600;
-    -fx-background-color: -base;
+    -jfx-rippler-fill: -tab-ripple-color;
 }
 
 .fx-text-flow {
     -fx-text-alignment: center;
+}
+
+.footer-button {
+    -fx-pref-width: 150;
+    -fx-pref-height: 30;
+    -fx-text-fill: -icon-color;
+    -fx-font-size: 16px;
 }
 
 .exit-button-tab {
@@ -59,7 +42,7 @@
 
 .standard-tab {
     -fx-pref-width: 200;
-    -fx-pref-height: 80;
+    -fx-pref-height: 60;;
 }
 
 .graph-pane {
@@ -67,7 +50,7 @@
     -fx-pref-height: 470;
     -fx-max-width: 470;
     -fx-max-height: 470;
-    -fx-background-color: -fx-base;
+    -fx-background-color: -panel-color;
 }
 
 .canvas-pane {
@@ -85,16 +68,64 @@
     -fx-pref-height: 100;
 }
 
-.exit-button {
+.header-button {
+    -fx-pref-width: 80;
+    -fx-pref-height: 80;
+    -fx-background-color: -header-color;
+}
+
+.header-combobox{
+    -fx-pref-width: 200;
+    -fx-pref-height: 79;
+}
+
+.SVGPath {
     -size: 24;
     -fx-min-height: -size;
     -fx-min-width: -size;
     -fx-max-height: -size;
     -fx-max-width: -size;
-    -fx-background-color: -accent;
-    -fx-shape: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z";
+    -fx-fill: -icon-color
 }
 
 .jfx-tab-pane .tab-selected-line {
-    -fx-background-color: -accent;
+    -fx-background-color: -underscore-select-color;
+}
+
+.jfx-combo-box{
+    -jfx-focus-color: -tab-ripple-color;
+    -jfx-unfocus-color: -header-color;
+    -fx-text-fill: -tab-text-color;
+}
+
+.combo-box-popup .list-view {
+    -fx-font-size: 16px;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: -header-color;
+    -fx-text-fill: -tab-text-color;
+}
+
+.combo-box .cell {
+    -fx-text-fill: -tab-text-color;
+    -fx-font-size: 16px;
+}
+
+.jfx-text-field {
+    -jfx-focus-color: -tab-ripple-color;
+    -jfx-unfocus-color: -header-color;
+    -fx-background-color: -header-color;
+    -fx-font-size: 16px;
+    -fx-text-fill: -tab-text-color;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover{
+    -fx-background-color: -tab-ripple-color;
+    -fx-text-fill: -tab-text-color;
+}
+
+.icon {
+    -fx-fill: -icon-color;
+    -fx-stroke: -icon-color;
 }

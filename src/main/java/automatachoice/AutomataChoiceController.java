@@ -9,22 +9,27 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.util.StringConverter;
+import settings.Palette;
+import settings.Settings;
 import simulation.SimulationController;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class AutomataChoiceController implements Initializable {
+    @FXML
+    private Parent automataChoice;
 
     @FXML
-    JFXTextField ruleNumber;
+    private JFXTextField ruleNumber;
 
     @FXML
-    JFXComboBox automataChoice;
+    private JFXComboBox automataChoiceBox;
 
     @FXML
-    JFXComboBox initialConditions;
+    private JFXComboBox initialConditions;
 
     private AutomataModelImpl model;
 
@@ -32,7 +37,7 @@ public class AutomataChoiceController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        this.automataChoice.getStyleClass().add(Settings.getActivePalette().getCssName());
         // Initialize rule number control
         ruleNumber.setText(Integer.toString(AutomataModel.INIT_RULE_NUM));
         ruleNumber.textProperty().addListener(new ChangeListener<String>() {
@@ -42,7 +47,7 @@ public class AutomataChoiceController implements Initializable {
                     if (Integer.parseInt(newValue) < 0 || Integer.parseInt(newValue) > model.getAutomataType().getRuleNumMax()) {
                         ruleNumber.setText("");
                     } else {
-                        model.setRuleNumber(Integer.parseInt(newValue));
+                        AutomataChoiceController.this.model.setRuleNumber(Integer.parseInt(newValue));
                     }
                 } catch (NumberFormatException e) {
                     ruleNumber.setText("");
@@ -50,11 +55,24 @@ public class AutomataChoiceController implements Initializable {
             }
         });
 
-
         //Initialize combo box control
-        this.automataChoice.getItems().addAll(AutomataType.values());
-        this.automataChoice.valueProperty().setValue(AutomataModel.INIT_AUTOMATA_TYPE);
-        this.automataChoice.valueProperty().addListener(new ChangeListener<AutomataType>() {
+        automataChoiceBox.getItems().addAll(AutomataType.values());
+
+        automataChoiceBox.setConverter(new StringConverter<AutomataType>(){
+            @Override
+            public String toString(AutomataType object) {
+                return object.getDisplayName();
+            }
+
+            @Override
+            public AutomataType fromString(String string) {
+                return AutomataType.valueOf(string);
+            }
+        });
+
+        automataChoiceBox.valueProperty().setValue(AutomataModel.INIT_AUTOMATA_TYPE);
+
+        automataChoiceBox.valueProperty().addListener(new ChangeListener<AutomataType>() {
             @Override
             public void changed(ObservableValue<? extends AutomataType> observable, AutomataType oldValue, AutomataType newValue) {
                 model.setAutomataType(newValue);
@@ -71,6 +89,11 @@ public class AutomataChoiceController implements Initializable {
 
     public void initModel(AutomataModelImpl model){
         this.model = model;
+    }
+
+    public void updateStyle(Palette oldStyle){
+        this.automataChoice.getStyleClass().remove(oldStyle.getCssName());
+        this.automataChoice.getStyleClass().add(Settings.getActivePalette().getCssName());
     }
 
     public void initSimulationController(SimulationController simulationController){

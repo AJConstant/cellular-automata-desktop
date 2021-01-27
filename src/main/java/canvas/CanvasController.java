@@ -4,12 +4,15 @@ import domain.automata_model.AutomataModel;
 import domain.automata_model.AutomataModelImpl;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import settings.Palette;
+import settings.Settings;
 
 import java.net.URL;
 
@@ -18,8 +21,8 @@ import java.util.ResourceBundle;
 
 public class CanvasController implements Initializable {
 
-    public static Color background = Color.web("#222629");
-    public static Color foreground = Color.web("#6b6e70");
+    @FXML
+    private Parent root;
 
     @FXML
     private Canvas canvas;
@@ -34,7 +37,7 @@ public class CanvasController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        this.root.getStyleClass().add(Settings.getActivePalette().getCssName());
     }
 
     /**
@@ -57,9 +60,9 @@ public class CanvasController implements Initializable {
                 int row = model.getGenerationNumber();
                 for(int i = 0; i < AutomataModel.MAX_WIDTH; i++){
                     if(this.model.contains(i)){
-                        this.drawCell1D(i, row, foreground);
+                        this.drawCell1D(i, row, Settings.getActivePalette().getCanvasForeground());
                     } else {
-                        this.drawCell1D(i, row, background);
+                        this.drawCell1D(i, row, Settings.getActivePalette().getCanvasBackground());
                     }
                 }
                 break;
@@ -68,9 +71,9 @@ public class CanvasController implements Initializable {
             case GameOfLife:
                 for(int i=0; i < AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT; i++){
                     if(this.model.contains(i)){
-                        drawCell2D(i, foreground);
+                        drawCell2D(i, Settings.getActivePalette().getCanvasForeground());
                     } else {
-                        drawCell2D(i, background);
+                        drawCell2D(i, Settings.getActivePalette().getCanvasBackground());
                     }
                 }
                 break;
@@ -98,8 +101,13 @@ public class CanvasController implements Initializable {
     public void resetCanvas(){
         if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
         GraphicsContext gc = this.canvas.getGraphicsContext2D();
-        gc.setFill(background);
+        gc.setFill(Settings.getActivePalette().getCanvasBackground());
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    }
+
+    public void updateStyle(Palette oldStyle){
+        this.root.getStyleClass().remove(oldStyle.getCssName());
+        this.root.getStyleClass().add(Settings.getActivePalette().getCssName());
     }
 
     @FXML

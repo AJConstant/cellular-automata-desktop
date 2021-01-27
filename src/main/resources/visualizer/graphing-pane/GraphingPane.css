@@ -1,0 +1,28 @@
+.graph-root {
+    -fx-background-color: -panel-color;
+}
+
+.graph-toolbar {
+    -fx-background-color: -panel-header-color;
+    -fx-pref-width: 470;
+    -fx-pref-height: 60;
+    -fx-padding: 0 20 0 20;
+    -fx-spacing: 16px;
+}
+
+.graphing-title {
+    -fx-font-size: 24px;
+    -fx-fill: -panel-title-text-color;
+}
+
+.chart-plot-background {
+    -fx-background-color: -graph-background;
+}
+
+.chart-series-line {
+    -fx-stroke: -graph-line-color;
+    -fx-stroke-width: 2px;
+    -fx-effect: null;
+}
+
+

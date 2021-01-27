@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTabPane?>
+<?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.SVGPath?>
 
-<AnchorPane styleClass="root-matte-colorful" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" stylesheets="@Main.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="root.MainController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="root.MainController">
    <children>
-      <JFXTabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="900.0" prefWidth="1600.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="80.0" tabMaxWidth="1600.0" tabMinHeight="80.0">
+      <JFXTabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="900.0" prefWidth="1600.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="50.0" tabMaxWidth="1600.0" tabMinHeight="50.0">
          <tabs>
             <Tab fx:id="titleTab" disable="true" styleClass="title-tab" text="CellularAutomata" />
             <Tab styleClass="standard-tab" text="Automata Visualizer">
@@ -25,12 +30,12 @@
                                 <fx:include fx:id="canvas" source="../visualizer/canvas-pane/CanvasPane.fxml" />
                             </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="31.0" layoutY="519.0" styleClass="automata-choice-pane" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="30.0">
+                        <AnchorPane layoutX="31.0" layoutY="519.0" styleClass="automata-choice-pane" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="30.0">
                             <children>
                                 <fx:include fx:id="automataChoice" source="../visualizer/automata-choice-pane/AutomataChoicePane.fxml" />
                             </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="542.0" layoutY="640.0" styleClass="simulation-pane" AnchorPane.bottomAnchor="60.0" AnchorPane.rightAnchor="30.0">
+                        <AnchorPane layoutX="542.0" layoutY="640.0" styleClass="simulation-pane" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="30.0">
                             <children>
                                 <fx:include fx:id="simulation" source="../visualizer/simulation-pane/SimulationPane.fxml" />
                             </children>
@@ -59,6 +64,32 @@
             <Insets />
          </opaqueInsets>
       </JFXTabPane>
-      <Button fx:id="exitButton" alignment="BASELINE_RIGHT" contentDisplay="RIGHT" maxHeight="24.0" maxWidth="24.0" minHeight="24.0" minWidth="24.0" mnemonicParsing="false" onAction="#closeApplication" prefHeight="24.0" prefWidth="24.0" styleClass="exit-button" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="28.0" />
+      <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="60.0" prefWidth="380.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXComboBox fx:id="themeSelect" styleClass="header-combobox" />
+            <JFXButton fx:id="hideStageButton" contentDisplay="GRAPHIC_ONLY" layoutX="206.0" layoutY="33.0" onAction="#minimize" styleClass="header-button">
+               <graphic>
+                  <SVGPath content="M6 19h12v2H6z" styleClass="SVGPath" />
+               </graphic>
+            </JFXButton>
+             <JFXButton fx:id="exitButton" contentDisplay="GRAPHIC_ONLY" onAction="#closeApplication" prefHeight="80.0" styleClass="header-button">
+               <graphic>
+                  <SVGPath content="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" styleClass="SVGPath" />
+               </graphic>
+            </JFXButton>
+         </children>
+         <padding>
+            <Insets right="20.0" />
+         </padding>
+      </HBox>
+      <JFXButton fx:id="visitGithubButton" onAction="#browseGithubPage" styleClass="footer-button" text="Visit the GitHub Repo" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="30.0" />
    </children>
+   <stylesheets>
+      <URL value="@Main.css" />
+      <URL value="@../Pallette.css" />
+   </stylesheets>
+   <styleClass>
+      <String fx:value="root" />
+      <String fx:value="root-green-dark" />
+   </styleClass>
 </AnchorPane>
