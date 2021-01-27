@@ -1,32 +1,40 @@
 package root;
 
+import automatachoice.AutomataChoiceController;
 import canvas.CanvasController;
-import com.jfoenix.controls.*;
-import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXMasonryPane;
+import com.jfoenix.controls.JFXTabPane;
 import domain.AutomataType;
-import domain.GenerationRule;
 import domain.automata_model.AutomataModel;
 import domain.automata_model.AutomataModelImpl;
 import graphing.PopulationGraphController;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.SVGPath;
+import javafx.scene.control.Tab;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import settings.Palette;
+import settings.Settings;
+import simulation.SimulationController;
 
-import javax.swing.text.AbstractDocument;
+import java.awt.*;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -34,213 +42,95 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MainController implements Initializable {
 
     @FXML
+    private Parent root;
+
+    @FXML
     private CanvasController canvasController;
 
     @FXML
     private PopulationGraphController populationGraphController;
-    
-    @FXML
-    private JFXButton togglePlaybackButton;
 
     @FXML
-    private JFXButton advanceGenerationButton;
+    private SimulationController simulationController;
 
     @FXML
-    private JFXButton randomizeBoardButton;
+    private AutomataChoiceController automataChoiceController;
 
     @FXML
-    private SVGPath togglePlaybackSVG;
+    private JFXTabPane tabPane;
 
     @FXML
-    private JFXButton resetButton;
+    private Button exitButton;
 
     @FXML
-    private JFXDrawer drawer;
+    private JFXComboBox<Palette> themeSelect;
 
     @FXML
-    private JFXTextField ruleNumber;
-
-    @FXML
-    private JFXHamburger menuButton;
-
-    @FXML
-    private JFXComboBox<AutomataType> automataTypeComboBox;
-
-    private Long TIME;
+    private JFXButton visitGithubButton;
 
     private AutomataModelImpl model;
 
-    private AtomicBoolean animating;
-
-    private HamburgerBackArrowBasicTransition menuTransition;
+    private boolean minimized = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        this.animating = new AtomicBoolean(false);
-
         this.model = new AutomataModelImpl(AutomataModel.INIT_AUTOMATA_TYPE, AutomataModel.INIT_RULE_NUM);
+
+        this.themeSelect.getItems().addAll(Palette.values());
+        this.themeSelect.valueProperty().setValue(Settings.getActivePalette());
+        this.themeSelect.setConverter(new StringConverter<Palette>() {
+            @Override
+            public String toString(Palette object) {
+                return object.getDisplayName();
+            }
+
+            @Override
+            public Palette fromString(String string) {
+                return Palette.valueOf(string);
+            }
+        });
+        this.themeSelect.valueProperty().addListener(new ChangeListener<Palette>() {
+            @Override
+            public void changed(ObservableValue<? extends Palette> observable, Palette oldValue, Palette newValue) {
+                Settings.setActivePalette(newValue);
+                canvasController.updateStyle(oldValue);
+                populationGraphController.updateStyle(oldValue);
+                automataChoiceController.updateStyle(oldValue);
+                simulationController.updateStyle(oldValue);
+                updateStyle(oldValue);
+                canvasController.drawModel(model);
+            }
+        });
+
         this.canvasController.initModel(this.model);
-        this.TIME = 50L;
+        this.automataChoiceController.initModel(this.model);
+        this.simulationController.initModel(this.model);
 
-        // Initialize drawer
-        menuTransition = new HamburgerBackArrowBasicTransition(menuButton);
-        menuTransition.setRate(-1);
-        try {
-            VBox sidePanelContent = FXMLLoader.load(getClass().getResource("../drawer/Drawer.fxml"));
-            drawer.setSidePane(sidePanelContent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Initialize rule number control
-        ruleNumber.setText(Integer.toString(AutomataModel.INIT_RULE_NUM));
-        ruleNumber.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                try{
-                    if(Integer.parseInt(newValue) < 0 || Integer.parseInt(newValue) > model.getAutomataType().getRuleNumMax()){
-                        ruleNumber.setText("");
-                    } else {
-                        model.setRuleNumber(Integer.parseInt(newValue));
-                    }
-                } catch (NumberFormatException e){
-                    ruleNumber.setText("");
-                }
-
-            }
-        });
-
-        //Initialize combo box control
-        this.automataTypeComboBox.getItems().setAll(AutomataType.values());
-        this.automataTypeComboBox.valueProperty().setValue(AutomataModel.INIT_AUTOMATA_TYPE);
-        this.automataTypeComboBox.valueProperty().addListener(new ChangeListener<AutomataType>() {
-            @Override
-            public void changed(ObservableValue<? extends AutomataType> observable, AutomataType oldValue, AutomataType newValue) {
-                model.setAutomataType(newValue);
-                if(newValue == AutomataType.GameOfLife){
-                    ruleNumber.textProperty().setValue("224");
-                    ruleNumber.setDisable(true);
-                } else {
-                    ruleNumber.setDisable(false);
-                }
-                reset(null);
-            }
-        });
+        this.simulationController.initCanvasController(this.canvasController);
+        this.simulationController.initGraphController(this.populationGraphController);
+        this.automataChoiceController.initSimulationController(this.simulationController);
 
         this.canvasController.drawModel(this.model);
+        this.tabPane.getSelectionModel().select(1);
+        this.root.getStyleClass().add(Settings.getActivePalette().getCssName());
+    }
+
+    public void updateStyle(Palette oldStyle){
+        this.root.getStyleClass().remove(oldStyle.getCssName());
+        this.root.getStyleClass().add(Settings.getActivePalette().getCssName());
     }
 
     @FXML
-    public void togglePlayback(ActionEvent actionEvent){
-        try {
-            if(this.animating.compareAndSet(true, false)){
-                this.togglePlaybackButton.setText("PLAY");
-                this.togglePlaybackSVG.setContent("M8 5v14l11-7z");
-
-                // Enable buttons
-                this.advanceGenerationButton.setDisable(false);
-                this.randomizeBoardButton.setDisable(false);
-                this.resetButton.setDisable(false);
-                this.menuButton.setDisable(false);
-
-            } else {
-                // Disable buttons
-                this.animating.set(true);
-                this.advanceGenerationButton.setDisable(true);
-                this.randomizeBoardButton.setDisable(true);
-                this.resetButton.setDisable(true);
-                this.menuButton.setDisable(true);
-
-                //TODO Refactor for ses
-                new Thread(new Task<Void>() {
-                            @Override
-                            protected Void call() throws Exception {
-                    while(animating.get()){
-                        try{
-                            model.incrementGeneration();
-                            Platform.runLater(() -> {
-                                populationGraphController.plotPopulation(model);
-                                canvasController.drawModel(model);
-                            });
-                            Thread.sleep(TIME);
-                        } catch (InterruptedException e) {
-                            if(isCancelled()){
-                                break;
-                            }
-                        }
-                    }
-                    return null;
-                            }
-                }).start();
-
-                this.togglePlaybackButton.setText("PAUSE");
-                this.togglePlaybackSVG.setContent("M6 19h4V5H6v14zm8-14v14h4V5h-4z");
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
+    public void closeApplication(){
+        ((Stage)(exitButton.getScene().getWindow())).close();
     }
 
-    @FXML
-    public void advanceGeneration(ActionEvent actionEvent){
-        this.model.incrementGeneration();
-        this.canvasController.drawModel(this.model);
-        this.populationGraphController.plotPopulation(this.model);
+    public void minimize(ActionEvent actionEvent) {
+        this.minimized = !this.minimized;
+        ((Stage)this.root.getScene().getWindow()).setIconified(this.minimized);
     }
 
-    @FXML
-    public void randomize(ActionEvent actionEvent) {
-        this.model.randomizeModel();
-        this.canvasController.resetCanvas();
-        this.canvasController.drawModel(this.model);
-        this.populationGraphController.resetGraph();
-        this.populationGraphController.plotPopulation(this.model);
-    }
-
-    @FXML
-    public void reset(ActionEvent actionEvent) {
-        this.model.resetModel();
-        this.canvasController.resetCanvas();
-        this.canvasController.drawModel(this.model);
-        this.populationGraphController.resetGraph();
-        this.populationGraphController.plotPopulation(this.model);
-    }
-
-    @FXML
-    public void toggleDrawer(){
-        this.menuTransition.setRate(menuTransition.getRate()*-1);
-        this.menuTransition.play();
-        if(this.drawer.isOpened()){
-            this.drawer.close();
-        } else if (this.drawer.isClosed()){
-            this.drawer.open();
-        }
-    }
-
-    public void advance30Generations(ActionEvent actionEvent) {
-        if(this.model.getAutomataType() == AutomataType.TimeSeries1D){
-            for(int i=0; i < 30; i++){
-                this.advanceGeneration(null);
-            }
-        } else {
-            this.model.incrementGeneration(30);
-            this.canvasController.drawModel(this.model);
-            this.populationGraphController.plotPopulation(this.model);
-        }
-    }
-
-    @FXML
-    public void advance10Generations(ActionEvent actionEvent) {
-        if(this.model.getAutomataType() == AutomataType.TimeSeries1D){
-            for(int i=0; i < 10; i++){
-                this.advanceGeneration(null);
-            }
-        } else {
-            this.model.incrementGeneration(10);
-            this.canvasController.drawModel(this.model);
-            this.populationGraphController.plotPopulation(this.model);
-        }
+    public void browseGithubPage(ActionEvent actionEvent) throws IOException, URISyntaxException {
+        Desktop.getDesktop().browse(new URL("http://github.com/AJConstant/ConwaysGameOfLifeDesktop").toURI());
     }
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="automataChoice" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="automatachoice.AutomataChoiceController">
+   <styleClass>
+      <String fx:value="automata-choice-pane" />
+   </styleClass>
+   <children>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" styleClass="dashboard-toolbar">
+         <items>
+            <Label styleClass="dashboard-label" text="Automata Options" />
+         </items>
+      </ToolBar>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="dashboard-hbox">
+         <children>
+            <Label contentDisplay="RIGHT" styleClass="dashboard-label" text="Automata Type:" textFill="#effeff">
+               <graphic>
+                  <JFXComboBox fx:id="automataChoiceBox" />
+               </graphic>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="dashboard-hbox">
+         <children>
+            <Label contentDisplay="RIGHT" styleClass="dashboard-label" text="Rule Number:" textFill="#effeff">
+               <graphic>
+                  <JFXTextField fx:id="ruleNumber" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+               </graphic>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="dashboard-hbox">
+         <children>
+            <Label styleClass="dashboard-label" text="Initial Conditions">
+               <graphic>
+                  <JFXComboBox fx:id="initialConditions" />
+               </graphic>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="20.0" />
+         </padding>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@AutomataChoicePane.css" />
+      <URL value="@../../Pallette.css" />
+   </stylesheets>
+</VBox>

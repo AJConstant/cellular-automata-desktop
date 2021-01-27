@@ -15,7 +15,7 @@ public class Main extends Application {
         Logger logger = Logger.getLogger("root.Main");
         Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
 
-        Scene scene = new Scene(root, 1380, 900);
+        Scene scene = new Scene(root, 1600, 900);
         primaryStage.setScene(scene);
         primaryStage.initStyle(StageStyle.UNDECORATED);
 

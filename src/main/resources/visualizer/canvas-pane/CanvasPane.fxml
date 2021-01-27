@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="root" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1040.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="canvas.CanvasController">
+   <children>
+      <ToolBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="1040.0" styleClass="canvas-toolbar">
+        <items>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="canvas-title" text="The Universe" />
+            <Text fx:id="populationText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="canvas-subtitle" text="Population: 0" />
+            <Text fx:id="generationText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="canvas-subtitle" text="Generation: 0" />
+        </items>
+      </ToolBar>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" styleClass="canvas-background">
+         <children>
+            <Canvas id="canvas" fx:id="canvas" height="500.0" width="1000.0" />
+         </children>
+      </Pane>
+   </children>
+   <stylesheets>
+      <URL value="@CanvasPane.css" />
+      <URL value="@../../Pallette.css" />
+   </stylesheets>
+   <styleClass>
+      <String fx:value="canvas-pane" />
+   </styleClass>
+</VBox>

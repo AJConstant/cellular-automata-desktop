@@ -1,0 +1,27 @@
+.canvas-toolbar{
+    -fx-background-color: -panel-header-color;
+    -fx-pref-width: 1040;
+    -fx-pref-height: 60;
+    -fx-padding: 0 20 0 20;
+    -fx-spacing: 16px;
+}
+
+.canvas-pane {
+    -fx-pref-width: 1040;
+    -fx-pref-height: 600;
+    -fx-background-color: -panel-color;
+}
+
+.canvas-title {
+    -fx-font-size: 30px;
+    -fx-fill: -panel-title-text-color;
+}
+
+.canvas-subtitle {
+    -fx-font-size: 20px;
+    -fx-fill: -panel-subtitle-text-color;
+}
+
+.canvas-background {
+    -fx-background-color: -canvas-background;
+}

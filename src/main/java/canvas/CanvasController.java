@@ -1,16 +1,18 @@
 package canvas;
 
-import domain.GenerationRule;
 import domain.automata_model.AutomataModel;
 import domain.automata_model.AutomataModelImpl;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
+import settings.Palette;
+import settings.Settings;
 
 import java.net.URL;
 
@@ -19,20 +21,23 @@ import java.util.ResourceBundle;
 
 public class CanvasController implements Initializable {
 
-    public static Color background = Color.web("#DEF2F1");
-    public static Color foreground = Color.web("#2B7A78");
+    @FXML
+    private Parent root;
 
     @FXML
     private Canvas canvas;
 
     @FXML
-    private Pane canvasBackground;
+    private Text populationText;
+
+    @FXML
+    private Text generationText;
 
     private AutomataModelImpl model;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.canvasBackground.getStyleClass().add("light-canvas");
+        this.root.getStyleClass().add(Settings.getActivePalette().getCssName());
     }
 
     /**
@@ -41,19 +46,23 @@ public class CanvasController implements Initializable {
      * @param model
      */
     public void initModel(AutomataModelImpl model) {
+        this.populationText.setText("Population: 0");
+        this.generationText.setText("Generation: 0");
         this.model = model;
     }
 
     public void drawModel(AutomataModelImpl model) throws IllegalStateException {
         if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
+        this.populationText.setText("Population: " + model.getPopulation());
+        this.generationText.setText("Generation: " + model.getGenerationNumber());
         switch(model.getAutomataType()){
             case TimeSeries1D:
                 int row = model.getGenerationNumber();
                 for(int i = 0; i < AutomataModel.MAX_WIDTH; i++){
                     if(this.model.contains(i)){
-                        this.drawCell1D(i, row, foreground);
+                        this.drawCell1D(i, row, Settings.getActivePalette().getCanvasForeground());
                     } else {
-                        this.drawCell1D(i, row, background);
+                        this.drawCell1D(i, row, Settings.getActivePalette().getCanvasBackground());
                     }
                 }
                 break;
@@ -62,9 +71,9 @@ public class CanvasController implements Initializable {
             case GameOfLife:
                 for(int i=0; i < AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT; i++){
                     if(this.model.contains(i)){
-                        drawCell2D(i, foreground);
+                        drawCell2D(i, Settings.getActivePalette().getCanvasForeground());
                     } else {
-                        drawCell2D(i, background);
+                        drawCell2D(i, Settings.getActivePalette().getCanvasBackground());
                     }
                 }
                 break;
@@ -92,8 +101,13 @@ public class CanvasController implements Initializable {
     public void resetCanvas(){
         if(this.model == null){ throw new IllegalStateException("Model is not yet initialized"); }
         GraphicsContext gc = this.canvas.getGraphicsContext2D();
-        gc.setFill(background);
+        gc.setFill(Settings.getActivePalette().getCanvasBackground());
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    }
+
+    public void updateStyle(Palette oldStyle){
+        this.root.getStyleClass().remove(oldStyle.getCssName());
+        this.root.getStyleClass().add(Settings.getActivePalette().getCssName());
     }
 
     @FXML

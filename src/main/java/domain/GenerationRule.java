@@ -1,11 +1,8 @@
 package domain;
 
 import domain.automata_model.AutomataModel;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
+
 
 // TODO Javadoc pls
 public class GenerationRule {
@@ -30,12 +27,12 @@ public class GenerationRule {
                 }
                 break;
             case TimeSeries2DFourNeighbor:
-                nextGen = new boolean[AutomataModel.MAX_WIDTH*AutomataModel.MAX_WIDTH];
+                nextGen = new boolean[AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT];
                 for(int i=0; i<AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT; i++){
                     int neighborSum = getFourNeighbors2D(model, i);
                     nextGen[i] = doRules2DFourNeighbor(ruleBitset, neighborSum, model.contains(i));
                 }
-                for(int i=0; i < AutomataModel.MAX_WIDTH*AutomataModel.MAX_WIDTH; i++){
+                for(int i=0; i < AutomataModel.MAX_WIDTH*AutomataModel.MAX_HEIGHT; i++){
                     if(nextGen[i]){
                         model.addCell(i);
                     } else {
@@ -131,7 +128,6 @@ public class GenerationRule {
      * @return true if cell should be alive next generation, false otherwise
      * @throws IllegalArgumentException
      */
-    // TODO abstract num neighbors
     private static boolean doRules1D(boolean[] rules, ArrayList<Boolean> neighbors) throws IllegalArgumentException {
         if(rules.length != (AutomataType.TimeSeries1D.getRulesetSize())){ throw new IllegalArgumentException("Improper Rules For 1D Time Series"); }
         if(neighbors.size() != 3){ throw new IllegalArgumentException("Neighbor array improperly shaped"); }

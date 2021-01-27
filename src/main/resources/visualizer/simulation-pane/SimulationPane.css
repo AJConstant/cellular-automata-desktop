@@ -1,0 +1,22 @@
+.dashboard-hbox {
+    -fx-alignment: center;
+    -fx-pref-height: 100.0;
+    -fx-pref-width: 200.0;
+}
+
+.simulation-pane {
+    -fx-pref-width: 1040;
+    -fx-pref-height: 100;
+    -fx-alignment: center;
+    -fx-background-color: -panel-color;
+}
+
+.simulation-button {
+    -fx-wrap-text: true;
+    -fx-text-fill: -panel-subtitle-text-color;
+    -fx-content-display: right;
+    -fx-graphic-text-gap: 8;
+    -fx-font-size: 20px;
+    -fx-pref-width: 170;
+    -fx-pref-height: 100;
+}

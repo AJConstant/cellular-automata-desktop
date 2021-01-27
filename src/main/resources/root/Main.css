@@ -1,0 +1,131 @@
+/* Base dark is darkest, then 2, then 3, then accent is lightest, then 2 */
+
+.jfx-tab-pane {
+    -fx-background-color: -background-color;
+}
+
+.jfx-tab-pane .headers-region {
+    -fx-alignment: center;
+    -fx-background-color: -header-color;
+}
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: -header-color;
+}
+
+.jfx-tab-pane .tab-header-area .jfx-rippler {
+    -jfx-rippler-fill: -tab-ripple-color;
+}
+
+.fx-text-flow {
+    -fx-text-alignment: center;
+}
+
+.footer-button {
+    -fx-pref-width: 150;
+    -fx-pref-height: 30;
+    -fx-text-fill: -icon-color;
+    -fx-font-size: 16px;
+}
+
+.exit-button-tab {
+    -fx-pref-width: 270;
+}
+
+.title-tab {
+    -fx-pref-width: 400;
+}
+
+.title-tab .tab-label {
+    -fx-font-size: 40px;
+}
+
+.standard-tab {
+    -fx-pref-width: 200;
+    -fx-pref-height: 60;;
+}
+
+.graph-pane {
+    -fx-pref-width: 470;
+    -fx-pref-height: 470;
+    -fx-max-width: 470;
+    -fx-max-height: 470;
+    -fx-background-color: -panel-color;
+}
+
+.canvas-pane {
+    -fx-pref-width: 1040;
+    -fx-pref-height: 600;
+}
+
+.automata-choice-pane {
+    -fx-pref-width: 470;
+    -fx-pref-height: 230;
+}
+
+.simulation-pane {
+    -fx-pref-width: 1040;
+    -fx-pref-height: 100;
+}
+
+.header-button {
+    -fx-pref-width: 80;
+    -fx-pref-height: 80;
+    -fx-background-color: -header-color;
+}
+
+.header-combobox{
+    -fx-pref-width: 200;
+    -fx-pref-height: 79;
+}
+
+.SVGPath {
+    -size: 24;
+    -fx-min-height: -size;
+    -fx-min-width: -size;
+    -fx-max-height: -size;
+    -fx-max-width: -size;
+    -fx-fill: -icon-color
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: -underscore-select-color;
+}
+
+.jfx-combo-box{
+    -jfx-focus-color: -tab-ripple-color;
+    -jfx-unfocus-color: -header-color;
+    -fx-text-fill: -tab-text-color;
+}
+
+.combo-box-popup .list-view {
+    -fx-font-size: 16px;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: -header-color;
+    -fx-text-fill: -tab-text-color;
+}
+
+.combo-box .cell {
+    -fx-text-fill: -tab-text-color;
+    -fx-font-size: 16px;
+}
+
+.jfx-text-field {
+    -jfx-focus-color: -tab-ripple-color;
+    -jfx-unfocus-color: -header-color;
+    -fx-background-color: -header-color;
+    -fx-font-size: 16px;
+    -fx-text-fill: -tab-text-color;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover{
+    -fx-background-color: -tab-ripple-color;
+    -fx-text-fill: -tab-text-color;
+}
+
+.icon {
+    -fx-fill: -icon-color;
+    -fx-stroke: -icon-color;
+}
