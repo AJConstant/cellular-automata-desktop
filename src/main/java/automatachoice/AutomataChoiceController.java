@@ -31,7 +31,7 @@ public class AutomataChoiceController implements Initializable {
     @FXML
     private JFXComboBox initialConditions;
 
-    private AutomataModelImpl model;
+    private AutomataModel model;
 
     private SimulationController simulationController;
 
@@ -87,7 +87,7 @@ public class AutomataChoiceController implements Initializable {
         });
     }
 
-    public void initModel(AutomataModelImpl model){
+    public void initModel(AutomataModel model){
         this.model = model;
     }
 

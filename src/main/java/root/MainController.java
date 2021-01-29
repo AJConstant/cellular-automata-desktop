@@ -4,9 +4,7 @@ import automatachoice.AutomataChoiceController;
 import canvas.CanvasController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXMasonryPane;
 import com.jfoenix.controls.JFXTabPane;
-import domain.AutomataType;
 import domain.automata_model.AutomataModel;
 import domain.automata_model.AutomataModelImpl;
 import graphing.PopulationGraphController;
@@ -17,9 +15,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import settings.Palette;
@@ -28,15 +23,9 @@ import simulation.SimulationController;
 
 import java.awt.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 
 
 public class MainController implements Initializable {
@@ -68,7 +57,7 @@ public class MainController implements Initializable {
     @FXML
     private JFXButton visitGithubButton;
 
-    private AutomataModelImpl model;
+    private AutomataModel model;
 
     private boolean minimized = false;
 
@@ -102,7 +91,6 @@ public class MainController implements Initializable {
             }
         });
 
-        this.canvasController.initModel(this.model);
         this.automataChoiceController.initModel(this.model);
         this.simulationController.initModel(this.model);
 
@@ -110,6 +98,7 @@ public class MainController implements Initializable {
         this.simulationController.initGraphController(this.populationGraphController);
         this.automataChoiceController.initSimulationController(this.simulationController);
 
+        this.canvasController.initModel(this.model);
         this.canvasController.drawModel(this.model);
         this.tabPane.getSelectionModel().select(1);
         this.root.getStyleClass().add(Settings.getActivePalette().getCssName());

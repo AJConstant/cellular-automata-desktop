@@ -3,7 +3,7 @@ package simulation;
 import canvas.CanvasController;
 import com.jfoenix.controls.JFXButton;
 import domain.AutomataType;
-import domain.automata_model.AutomataModelImpl;
+import domain.automata_model.AutomataModel;
 import graphing.PopulationGraphController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -46,13 +46,13 @@ public class SimulationController implements Initializable {
 
     private AtomicBoolean animating;
 
-    private AutomataModelImpl model;
+    private AutomataModel model;
 
     private CanvasController canvasController;
 
     private PopulationGraphController populationGraphController;
 
-    private Long TIME = 50L;
+    private Long TIME = 100L;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,7 +68,7 @@ public class SimulationController implements Initializable {
         this.populationGraphController = controller;
     }
 
-    public void initModel(AutomataModelImpl model){
+    public void initModel(AutomataModel model){
         this.model = model;
     }
 
@@ -153,28 +153,16 @@ public class SimulationController implements Initializable {
 
     @FXML
     public void advance30Generations(ActionEvent actionEvent) {
-        if(this.model.getAutomataType() == AutomataType.TimeSeries1D){
-            for(int i=0; i < 30; i++){
-                this.advanceGeneration(null);
-            }
-        } else {
             this.model.incrementGeneration(30);
             this.canvasController.drawModel(this.model);
             this.populationGraphController.plotPopulation(this.model);
-        }
     }
 
     @FXML
     public void advance10Generations(ActionEvent actionEvent) {
-        if(this.model.getAutomataType() == AutomataType.TimeSeries1D){
-            for(int i=0; i < 10; i++){
-                this.advanceGeneration(null);
-            }
-        } else {
             this.model.incrementGeneration(10);
             this.canvasController.drawModel(this.model);
             this.populationGraphController.plotPopulation(this.model);
-        }
     }
 
     public void updateStyle(Palette oldStyle){
