@@ -1,5 +1,5 @@
 package graphing;
-import domain.automata_model.AutomataModelImpl;
+import domain.automata_model.AutomataModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -37,7 +37,7 @@ public class PopulationGraphController implements Initializable {
         this.root.getStyleClass().add(Settings.getActivePalette().getCssName());
     }
 
-    public void plotPopulation(AutomataModelImpl model){
+    public void plotPopulation(AutomataModel model){
         this.series.getData().add(new XYChart.Data<>(model.getGenerationNumber(), model.getPopulation()));
         // This is a regression from Java 8 to Java 12, still unfixed, see here:
         // https://bugs.openjdk.java.net/browse/JDK-8209172?jql=status%20%3D%20Open%20AND%20text%20~%20%22javafx%20chart%22
