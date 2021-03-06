@@ -1,1 +1,1 @@
-# ConwaysGameOfLifeDesktop
+# Cellular Automata
