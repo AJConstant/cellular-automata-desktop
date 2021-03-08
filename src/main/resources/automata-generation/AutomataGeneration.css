@@ -1,0 +1,103 @@
+.background {
+    -fx-background-color: -background-color;
+    -fx-pref-height: 820;
+    -fx-pref-width: 1600;
+}
+
+.canvas {
+    -fx-pref-width: 500;
+    -fx-pref-height: 500;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+.canvas-background {
+    -fx-background-color: -canvas-background;
+}
+
+.jfx-combo-box{
+    -jfx-focus-color: -tab-ripple-color;
+    -jfx-unfocus-color: -panel-color;
+    -fx-text-fill: -text-subtitle-color;
+    -fx-pref-height: 40;
+    -fx-pref-width: 200;
+}
+
+.icon-button {
+    -fx-pref-width: 24;
+    -fx-pref-height: 40;
+}
+
+.icon {
+    -fx-fill: -icon-color;
+}
+
+.combo-box-popup .list-view {
+    -fx-font-size: 12px;
+    -fx-alignment: center-right;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: -panel-color;
+    -fx-text-fill: -panel-subtitle-text-color;
+    -fx-alignment: center-right;
+}
+
+.list-cell {
+    -fx-alignment: center-right;
+}
+
+.combo-box .cell {
+    -fx-text-fill: -panel-subtitle-text-color;
+    -fx-font-size: 12px;
+    -fx-alignment: center-right;
+}
+
+.jfx-text-field {
+    -jfx-focus-color: -tab-ripple-color;
+    -jfx-unfocus-color: -panel-color;
+    -fx-background-color: -panel-color;
+    -fx-font-size: 16px;
+    -fx-text-fill: -panel-subtitle-text-color;
+    -fx-pref-height: 40;
+    -fx-pref-width: 100;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover{
+    -fx-background-color: -tab-ripple-color;
+    -fx-text-fill: -panel-subtitle-text-color;
+}
+
+.standard-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -panel-title-text-color;
+    -fx-pref-height: 40;
+    -fx-pref-width: 300;
+    -fx-graphic-text-gap: 12;
+    -fx-content-display: right;
+    -fx-alignment: center_left;
+    -fx-padding: 0 0 0 30;
+}
+
+.rule-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -panel-title-text-color;
+    -fx-pref-height: 40;
+    -fx-pref-width: 376;
+    -fx-graphic-text-gap: 12;
+    -fx-content-display: right;
+    -fx-alignment: center_left;
+    -fx-padding: 0 0 0 30;
+}
+
+.task-button {
+    -fx-pref-width: 300;
+    -fx-pref-height: 50;
+    -fx-text-fill: -panel-title-text-color;
+}
+
+.jfx-progress-bar {
+    -fx-pref-width: 1000;
+    -fx-pref-height: 10;
+}

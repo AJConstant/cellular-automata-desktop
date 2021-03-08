@@ -1,26 +1,54 @@
 package domain.automata_model;
 
 import domain.AutomataType;
+import domain.InitialCondition;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AutomataModelImpl implements AutomataModel {
 
     private AutomataType automataType;
+    private InitialCondition initialCondition;
+    private int height;
+    private int width;
+    private int _outer_height;
+    private int _outer_width;
     private int generation;
     private int population;
     private boolean[][][] automata;
     private int ruleNum = 1;
     private boolean[] lookupTable = new boolean[1];
 
-    public AutomataModelImpl(AutomataType automataType, int ruleNum) {
+    public AutomataModelImpl(AutomataType automataType, int ruleNum, InitialCondition initialCondition) {
+        assert(automataType != null);
+        assert(initialCondition != null);
         this.generation = 0;
         this.automataType = automataType;
         this.ruleNum = ruleNum;
-        this.initModel();
-        this.buildLookupTable();
+        this.initialCondition = initialCondition;
+        this.width = AutomataModel.INIT_UNIVERSE_WIDTH;
+        this.height = AutomataModel.INIT_UNIVERSE_HEIGHT;
+        this._outer_width = this.width+2;
+        this._outer_height = this.height+2;
+        this.init();
+    }
+
+    public AutomataModelImpl(AutomataType automataType, int ruleNum, InitialCondition initialCondition, int height, int width) {
+        assert(automataType != null);
+        assert(initialCondition != null);
+        if(height < 0 || height > MAX_UNIVERSE_HEIGHT || width < 0 || width > MAX_UNIVERSE_WIDTH){
+            throw new IllegalArgumentException("Model Dimensions out of Range (0, 10000)");
+        }
+        this.generation = 0;
+        this.automataType = automataType;
+        this.ruleNum = ruleNum;
+        this.initialCondition = initialCondition;
+        this.width = width;
+        this._outer_width = width+2;
+        this.height = height;
+        this._outer_height = height+2;
+        this.init();
     }
 
     /**
@@ -44,6 +72,32 @@ public class AutomataModelImpl implements AutomataModel {
         }
     }
 
+    public String toString(){
+        return "Automata Type: " + this.automataType + "\nRule Number: " + this.ruleNum + "\n Initial Condition Name: " + this.initialCondition.getDisplayName();
+    }
+
+    @Override
+    public int getUniverseWidth() {
+        return this.width;
+    }
+
+    @Override
+    public void setUniverseWidth(int width) {
+        this.width = width;
+        this._outer_width = width+2;
+    }
+
+    @Override
+    public int getUniverseHeight() {
+        return this.height;
+    }
+
+    @Override
+    public void setUniverseHeight(int height) {
+        this.height = height;
+        this._outer_height = height+2;
+    }
+
     @Override
     public AutomataType getAutomataType() {
         return this.automataType;
@@ -52,6 +106,21 @@ public class AutomataModelImpl implements AutomataModel {
     @Override
     public void setAutomataType(AutomataType automataType) {
         this.automataType = automataType;
+    }
+
+    @Override
+    public InitialCondition getInitialCondition() {
+        return this.initialCondition;
+    }
+
+    @Override
+    // Not pretty.
+    public void setInitialCondition(InitialCondition cond) {
+        if(this.automataType.getInitialConditions().contains(cond)){
+            this.initialCondition = cond;
+        } else {
+            this.initialCondition = this.automataType.getInitialConditions().get(0);
+        }
     }
 
     @Override
@@ -68,6 +137,17 @@ public class AutomataModelImpl implements AutomataModel {
     @Override
     public boolean[][] getAutomata() {
         return this.automata[this.generation%2];
+    }
+
+    @Override
+    public void setAutomata(boolean[][] automata){
+        if(automata == null || automata.length != this._outer_height || automata[0].length != this._outer_width){
+            throw new IllegalArgumentException("Improper dimensions provided");
+        }
+        for(int i=0; i<automata.length; i++){
+            this.automata[0][i] = Arrays.copyOf(automata[i], automata[i].length);
+            this.automata[1][i] = Arrays.copyOf(automata[i], automata[i].length);
+        }
     }
 
     @Override
@@ -92,13 +172,13 @@ public class AutomataModelImpl implements AutomataModel {
 
         switch(this.automataType){
             case TimeSeries1D:
-                if(this.generation >= AutomataModel.UNIVERSE_HEIGHT-1){
+                if(this.generation >= this.height-1){
                     // Horrible dependence universe size for number of generations available
                     throw new IllegalStateException("Cannot generate any further generations");
                 }
                 int currentGenRow = this.generation+1;
                 int rowToModify = this.generation+2;
-                for(int col=1; col <= AutomataModel.UNIVERSE_WIDTH; col++){
+                for(int col=1; col <= this.width; col++){
                     neighborhoodID = (thisGen[currentGenRow][col-1]? 4 : 0) +
                             (thisGen[currentGenRow][col]? 2 : 0) +
                             (thisGen[currentGenRow][col+1]? 1 : 0);
@@ -110,9 +190,9 @@ public class AutomataModelImpl implements AutomataModel {
                 }
                 break;
             case TimeSeries2DFourNeighbor:
-                for(int row=1;  row <= AutomataModel.UNIVERSE_HEIGHT; row++){
+                for(int row=1;  row <= this.height; row++){
                     neighborhoodID = (thisGen[row][1] ? 1 : 0);
-                    for(int col=1; col <= AutomataModel.UNIVERSE_WIDTH; col++){
+                    for(int col=1; col <= this.width; col++){
                         neighborhoodID = ((neighborhoodID & 0b0101) << 2);
                         neighborhoodID += (thisGen[row-1][col] ? 8 : 0) +
                                 (thisGen[row][col+1] ? 1 : 0) +
@@ -126,11 +206,11 @@ public class AutomataModelImpl implements AutomataModel {
                 break;
             case TimeSeries2DEightNeighbor:
             case GameOfLife:
-                for(int row=1;  row <= AutomataModel.UNIVERSE_HEIGHT; row++){
+                for(int row=1;  row <= this.height; row++){
                     neighborhoodID = (thisGen[row-1][0] ? 32 : 0) + (thisGen[row-1][1] ? 4 : 0) +
                             (thisGen[row][0] ? 16 : 0) + (thisGen[row][1] ? 2 : 0) +
                             (thisGen[row+1][0] ? 8 : 0) + (thisGen[row+1][1] ? 1 : 0);
-                    for(int col=1; col <= AutomataModel.UNIVERSE_WIDTH; col++){
+                    for(int col=1; col <= this.width; col++){
                         neighborhoodID = ((neighborhoodID & 0b111111) << 3) +
                                 (thisGen[row-1][col+1] ? 4 : 0) +
                                 (thisGen[row][col+1] ? 2 : 0) +
@@ -158,23 +238,8 @@ public class AutomataModelImpl implements AutomataModel {
 
     @Override
     public void resetModel() {
-        this.automata = new boolean[2][UNIVERSE_HEIGHT+2][UNIVERSE_WIDTH+2];
-        switch (this.automataType){
-            case TimeSeries1D:
-                // Must initialize both
-                this.automata[0][1][UNIVERSE_WIDTH/2] = true;
-                this.automata[1][1][UNIVERSE_WIDTH/2] = true;
-                break;
-            case TimeSeries2DFourNeighbor:
-            case TimeSeries2DEightNeighbor:
-            case GameOfLife:
-                this.automata[0][UNIVERSE_HEIGHT/2][UNIVERSE_WIDTH/2] = true;
-                this.automata[1][UNIVERSE_HEIGHT/2][UNIVERSE_WIDTH/2] = true;
-                break;
-        }
         this.generation = 0;
-        this.population = 1;
-        this.buildLookupTable();
+        this.init();
     }
 
     @Override
@@ -184,8 +249,8 @@ public class AutomataModelImpl implements AutomataModel {
         this.population = 0;
         int ngpop = ThreadLocalRandom.current().nextInt(25000, 125000);
         for(int i=0; i < ngpop; i++) {
-            int row = (ThreadLocalRandom.current().nextInt() & Integer.MAX_VALUE) % (UNIVERSE_HEIGHT);
-            int col = (ThreadLocalRandom.current().nextInt() & Integer.MAX_VALUE) %  (UNIVERSE_WIDTH);
+            int row = (ThreadLocalRandom.current().nextInt() & Integer.MAX_VALUE) % (this.height);
+            int col = (ThreadLocalRandom.current().nextInt() & Integer.MAX_VALUE) %  (this.width);
             if(row != 0 && col != 0){
                 if(!this.automata[0][row][col]){
                     this.population++;
@@ -268,48 +333,34 @@ public class AutomataModelImpl implements AutomataModel {
         }
     }
 
-    public void printLookupTable(){
-        switch(this.automataType){
-            case TimeSeries1D:
-                System.out.println("\nLookup table for rule number: " + this.ruleNum);
-                for(int i=0; i < 8; i++) {
-                    System.out.println("Index: " + i);
-                    System.out.print((i >>> 2 & 1) == 1? "x ": "_ ");
-                    System.out.print((i >>> 1 & 1) == 1? "x ": "_ ");
-                    System.out.println((i >>> 0 & 1) == 1? "x ": "_ ");
-                    if(lookupTable[i]){
-                        System.out.println("  x");
-                    } else {
-                        System.out.println("  _");
-                    }
-                }
-                break;
-            default:
-                break;
+    /**
+     *
+     */
+    public void init(){
+        if(this.width < 0 || this.width > MAX_UNIVERSE_WIDTH || this.height < 0 || this.height > MAX_UNIVERSE_HEIGHT){
+            throw new IllegalStateException("Universe Dimensions Improperly Initialized");
         }
+        if(this.automataType == null){
+            throw new IllegalStateException("Automata Type Uninitialized");
+        }
+        if(this.initialCondition == null){
+            throw new IllegalStateException("Initial Condition Uninitialized");
+        }
+        this.automata = new boolean[2][this._outer_height][this._outer_width];
+        this.automata[0] = this.initialCondition.getInitialCondition(this);
+        this.automata[1] = this.initialCondition.getInitialCondition(this);
+        this.initializePopulation();
+        this.buildLookupTable();
     }
 
-    public void printNeighborhood8Neighbor(int neighborhoodID){
-        System.out.print((neighborhoodID >> 8 & 1) == 1 ? "X " : "_ ");
-        System.out.print((neighborhoodID >> 5 & 1) == 1 ? "X " : "_ ");
-        System.out.println((neighborhoodID >> 2 & 1) == 1 ? "X" : "_");
-
-        System.out.print((neighborhoodID >> 7 & 1) == 1 ? "X " : "_ ");
-        System.out.print((neighborhoodID >> 4 & 1) == 1 ? "X " : "_ ");
-        System.out.println((neighborhoodID >> 1 & 1) == 1 ? "X" : "_");
-
-        System.out.print((neighborhoodID >> 6 & 1) == 1 ? "X " : "_ ");
-        System.out.print((neighborhoodID >> 3 & 1) == 1 ? "X " : "_ ");
-        System.out.println((neighborhoodID >> 0 & 1) == 1 ? "X" : "_");
-
-        System.out.println();
-    }
-
-    private void initModel(){
-        this.automata = new boolean[2][AutomataModel.UNIVERSE_HEIGHT+2][AutomataModel.UNIVERSE_WIDTH+2];
-    }
-
-    public boolean[][][] getWholeUniverse(){
-        return this.automata;
+    private void initializePopulation(){
+       if(this.automata == null) { throw new IllegalStateException("Automata array is null"); }
+       int pop=0;
+       for(int i=0; i<this.automata[0].length; i++){
+           for(int j=0; j<this.automata[0][i].length; j++){
+               pop += this.automata[0][i][j]? 1 : 0;
+           }
+       }
+       this.population = pop;
     }
 }

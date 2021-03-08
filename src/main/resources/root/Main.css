@@ -92,6 +92,10 @@
     -fx-background-color: -underscore-select-color;
 }
 
+.tab:selected {
+
+}
+
 .jfx-combo-box{
     -jfx-focus-color: -tab-ripple-color;
     -jfx-unfocus-color: -header-color;

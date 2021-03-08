@@ -37,23 +37,21 @@ public class CanvasController implements Initializable {
 
     private AutomataModel model;
 
-    private boolean showZero;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.showZero = true;
         this.canvas.setHeight(CANVAS_HEIGHT);
         this.canvas.setWidth(CANVAS_WIDTH);
         this.root.getStyleClass().add(Settings.getActivePalette().getCssName());
     }
 
-    public void drawModel(AutomataModel model) throws IllegalStateException {
+    public void drawModel() throws IllegalStateException {
         boolean[][] generation = model.getAutomata();
         GraphicsContext gc = this.canvas.getGraphicsContext2D();
         Paint foreground = Settings.getActivePalette().getCanvasForeground();
         Paint background = Settings.getActivePalette().getCanvasBackground();
-        for(int row=1; row <= AutomataModel.UNIVERSE_HEIGHT+1; row++){
-            for(int col=1; col <= AutomataModel.UNIVERSE_WIDTH+1; col++){
+        for(int row=1; row <= model.getUniverseHeight()+1; row++){
+            for(int col=1; col <= model.getUniverseWidth()+1; col++){
                 gc.setFill(generation[row][col] ? foreground : background);
                 gc.fillRect((col-1)*2, (row-1)*2, 2, 2);
             }
