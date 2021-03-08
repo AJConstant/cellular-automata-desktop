@@ -104,7 +104,7 @@ public class SimulationController implements Initializable {
                                 model.incrementGeneration();
                                 Platform.runLater(() -> {
                                     populationGraphController.plotPopulation(model);
-                                    canvasController.drawModel(model);
+                                    canvasController.drawModel();
                                 });
                                 Thread.sleep(TIME);
                             } catch (InterruptedException e) {
@@ -129,7 +129,7 @@ public class SimulationController implements Initializable {
     @FXML
     public void advanceGeneration(ActionEvent actionEvent){
         this.model.incrementGeneration();
-        this.canvasController.drawModel(this.model);
+        this.canvasController.drawModel();
         this.populationGraphController.plotPopulation(this.model);
     }
 
@@ -137,7 +137,7 @@ public class SimulationController implements Initializable {
     public void randomize(ActionEvent actionEvent) {
         this.model.randomizeModel();
         this.canvasController.resetCanvas();
-        this.canvasController.drawModel(this.model);
+        this.canvasController.drawModel();
         this.populationGraphController.resetGraph();
         this.populationGraphController.plotPopulation(this.model);
     }
@@ -146,7 +146,7 @@ public class SimulationController implements Initializable {
     public void reset(ActionEvent actionEvent) {
         this.model.resetModel();
         this.canvasController.resetCanvas();
-        this.canvasController.drawModel(this.model);
+        this.canvasController.drawModel();
         this.populationGraphController.resetGraph();
         this.populationGraphController.plotPopulation(this.model);
     }
@@ -154,14 +154,14 @@ public class SimulationController implements Initializable {
     @FXML
     public void advance30Generations(ActionEvent actionEvent) {
             this.model.incrementGeneration(30);
-            this.canvasController.drawModel(this.model);
+            this.canvasController.drawModel();
             this.populationGraphController.plotPopulation(this.model);
     }
 
     @FXML
     public void advance10Generations(ActionEvent actionEvent) {
             this.model.incrementGeneration(10);
-            this.canvasController.drawModel(this.model);
+            this.canvasController.drawModel();
             this.populationGraphController.plotPopulation(this.model);
     }
 

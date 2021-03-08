@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.lang.String?>
@@ -10,23 +11,21 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="automataChoice" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="automatachoice.AutomataChoiceController">
+<VBox fx:id="automataVisualization" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="automatavisualization.AutomataVisualizationController">
    <styleClass>
       <String fx:value="automata-choice-pane" />
+      <String fx:value="root-green-dark" />
    </styleClass>
    <children>
       <ToolBar prefHeight="40.0" prefWidth="200.0" styleClass="dashboard-toolbar">
          <items>
-            <Label styleClass="dashboard-label" text="Automata Options" />
+            <Label styleClass="dashboard-title" text="Automata Options" />
          </items>
       </ToolBar>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="dashboard-hbox">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="dashboard-hbox" VBox.vgrow="ALWAYS">
          <children>
-            <Label contentDisplay="RIGHT" styleClass="dashboard-label" text="Automata Type:" textFill="#effeff">
-               <graphic>
-                  <JFXComboBox fx:id="automataChoiceBox" />
-               </graphic>
-            </Label>
+            <Label alignment="CENTER" contentDisplay="RIGHT" styleClass="dashboard-label" text="Automata Type:" textFill="#effeff" HBox.hgrow="ALWAYS" />
+            <JFXComboBox fx:id="automataChoiceBox" labelFloat="true" styleClass="list-cell" HBox.hgrow="ALWAYS" />
          </children>
          <padding>
             <Insets left="20.0" />
@@ -34,11 +33,9 @@
       </HBox>
       <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="dashboard-hbox">
          <children>
-            <Label contentDisplay="RIGHT" styleClass="dashboard-label" text="Rule Number:" textFill="#effeff">
-               <graphic>
-                  <JFXTextField fx:id="ruleNumber" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
-               </graphic>
-            </Label>
+            <Label contentDisplay="RIGHT" styleClass="dashboard-label" text="Rule Number:" textFill="#effeff" HBox.hgrow="ALWAYS" />
+            <JFXTextField fx:id="ruleNumber" alignment="CENTER_RIGHT" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="256.0" />
+            <JFXButton onAction="#randomizeRuleNumber" styleClass="automata-choice-button" text="Random" />
          </children>
          <padding>
             <Insets left="20.0" />
@@ -46,11 +43,8 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="dashboard-hbox">
          <children>
-            <Label styleClass="dashboard-label" text="Initial Conditions">
-               <graphic>
-                  <JFXComboBox fx:id="initialConditions" />
-               </graphic>
-            </Label>
+            <Label styleClass="dashboard-label" text="Initial Conditions:" HBox.hgrow="ALWAYS" />
+            <JFXComboBox fx:id="initialConditions" labelFloat="true" styleClass="list-cell" />
          </children>
          <padding>
             <Insets left="20.0" />
@@ -61,4 +55,7 @@
       <URL value="@AutomataChoicePane.css" />
       <URL value="@../../Pallette.css" />
    </stylesheets>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </VBox>

@@ -1,12 +1,11 @@
 package root;
 
-import automatachoice.AutomataChoiceController;
+import automatavisualization.AutomataVisualizationController;
 import canvas.CanvasController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTabPane;
 import domain.automata_model.AutomataModel;
-import domain.automata_model.AutomataModelImpl;
 import graphing.PopulationGraphController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -43,7 +42,7 @@ public class MainController implements Initializable {
     private SimulationController simulationController;
 
     @FXML
-    private AutomataChoiceController automataChoiceController;
+    private AutomataVisualizationController automataVisualizationController;
 
     @FXML
     private JFXTabPane tabPane;
@@ -63,7 +62,11 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.model = new AutomataModelImpl(AutomataModel.INIT_AUTOMATA_TYPE, AutomataModel.INIT_RULE_NUM);
+
+        this.simulationController.initCanvasController(this.canvasController);
+        this.simulationController.initGraphController(this.populationGraphController);
+        this.automataVisualizationController.initSimulationController(this.simulationController);
+        this.automataVisualizationController.initCanvasController(this.canvasController);
 
         this.themeSelect.getItems().addAll(Palette.values());
         this.themeSelect.valueProperty().setValue(Settings.getActivePalette());
@@ -84,22 +87,14 @@ public class MainController implements Initializable {
                 Settings.setActivePalette(newValue);
                 canvasController.updateStyle(oldValue);
                 populationGraphController.updateStyle(oldValue);
-                automataChoiceController.updateStyle(oldValue);
+                automataVisualizationController.updateStyle(oldValue);
                 simulationController.updateStyle(oldValue);
                 updateStyle(oldValue);
-                canvasController.drawModel(model);
+                canvasController.drawModel();
             }
         });
 
-        this.automataChoiceController.initModel(this.model);
-        this.simulationController.initModel(this.model);
-
-        this.simulationController.initCanvasController(this.canvasController);
-        this.simulationController.initGraphController(this.populationGraphController);
-        this.automataChoiceController.initSimulationController(this.simulationController);
-
-        this.canvasController.initModel(this.model);
-        this.canvasController.drawModel(this.model);
+        this.canvasController.drawModel();
         this.tabPane.getSelectionModel().select(1);
         this.root.getStyleClass().add(Settings.getActivePalette().getCssName());
     }

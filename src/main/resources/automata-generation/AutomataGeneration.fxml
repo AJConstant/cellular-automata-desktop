@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXProgressBar?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="automatageneration.AutomataGenerationController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1477.333351135254" minWidth="10.0" prefWidth="1259.333251953125" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="30.0" minWidth="10.0" prefWidth="30.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="820.0" minHeight="10.0" prefHeight="733.0000038146973" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <stylesheets>
+      <URL value="@AutomataGeneration.css" />
+      <URL value="@../Pallette.css" />
+   </stylesheets>
+   <styleClass>
+      <String fx:value="background" />
+      <String fx:value="root-green-dark" />
+   </styleClass>
+   <children>
+      <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="200.0" prefWidth="200.0" styleClass="canvas-background" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <content>
+            <Canvas fx:id="canvas" height="200.0" width="200.0" />
+         </content>
+      </ScrollPane>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+         <children>
+            <VBox>
+               <children>
+                  <Label styleClass="standard-label" text="Generations">
+                     <graphic>
+                        <JFXTextField fx:id="generationNumberField" />
+                     </graphic>
+                  </Label>
+                  <Label styleClass="standard-label" text="Automata Type">
+                     <graphic>
+                        <JFXComboBox fx:id="automataTypeSelect" />
+                     </graphic>
+                  </Label>
+                  <Label styleClass="standard-label" text="Initial Condition">
+                     <graphic>
+                        <JFXComboBox fx:id="initialConditionSelect" />
+                     </graphic>
+                  </Label>
+                  <HBox>
+                     <children>
+                        <Label styleClass="rule-label" graphicTextGap="12.0" text="Rule Number">
+                           <graphic>
+                              <JFXTextField fx:id="ruleNumberField" />
+                           </graphic>
+                        </Label>
+                        <JFXButton onAction="#randomizeRuleNumber" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" styleClass="icon-button" text="Randomize">
+                           <graphic>
+                              <SVGPath content="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" styleClass="icon" />
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <Label styleClass="standard-label" text="Universe Size">
+                     <graphic>
+                        <JFXComboBox fx:id="universeSizeSelect" />
+                     </graphic>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox alignment="BOTTOM_CENTER" prefHeight="530.0" prefWidth="300.0">
+               <children>
+                  <JFXButton fx:id="generateButton" onAction="#generate" styleClass="task-button" text="Generate" />
+                  <JFXButton fx:id="saveButton" onAction="#saveCanvas" styleClass="task-button" text="Save Generated Image" />
+                  <JFXButton fx:id="resetButton" onAction="#resetCanvas" styleClass="task-button" text="Reset" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <JFXProgressBar fx:id="progressBar" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+   </children>
+</GridPane>

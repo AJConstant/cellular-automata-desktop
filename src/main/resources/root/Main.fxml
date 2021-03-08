@@ -32,7 +32,7 @@
                         </AnchorPane>
                         <AnchorPane layoutX="31.0" layoutY="519.0" styleClass="automata-choice-pane" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="30.0">
                             <children>
-                                <fx:include fx:id="automataChoice" source="../visualizer/automata-choice-pane/AutomataChoicePane.fxml" />
+                                <fx:include fx:id="automataVisualization" source="../visualizer/automata-choice-pane/AutomataChoicePane.fxml" />
                             </children>
                         </AnchorPane>
                         <AnchorPane layoutX="542.0" layoutY="640.0" styleClass="simulation-pane" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="30.0">
@@ -44,19 +44,13 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab styleClass="standard-tab" text="1D Cellular Automata">
+            <Tab styleClass="standard-tab" text="Automata Generator">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
-            <Tab styleClass="standard-tab" text="2D Cellular Automata">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-               </content>
-            </Tab>
-            <Tab styleClass="standard-tab" text="Conway's Game of Life">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
+                  <children>
+                      <fx:include fx:id="generation" source="../automata-generation/AutomataGeneration.fxml" />
+                  </children>
+                </AnchorPane>
               </content>
             </Tab>
          </tabs>
