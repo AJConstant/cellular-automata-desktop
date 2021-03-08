@@ -1,5 +1,8 @@
 # ConwaysGameOfLifeDesktop
 
+## WARNING
+Running the real time simulation with unknown rule numbers may cause the canvas to blink as cells transition from alive to dead and back each time. PLEASE BE SURE THAT YOU TEST AN UNKNOWN RULE TYPE BY MANUALLY SIMULATING A FEW GENERATIONS BEFORE PRESSING PLAY!
+
 ## Explore the World of Cellular Automata!
 Cellular automata are simple automata that can take on two states: alive or dead (or any other dichotomies you can think of). These cellular automata tend to live in either a 1d or 2d plane with their peers, and as time passes they are born and die according to simple rules. These rules determine, for each cell in the plane, whether the cell should be alive (based on the contents of itself and its neighbors) or dead. Although these rules are generally very simple, they can produce interesting, complex behavior when applied iteratively to a set of initial conditions.
 
