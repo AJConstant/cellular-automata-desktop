@@ -52,4 +52,3 @@ There's a tremendous amount to explore! Here are some interesting automata I've 
 ![8NeighborRule](https://user-images.githubusercontent.com/50113756/110383161-88a93a00-8021-11eb-8965-5d4232e5181c.png)
 ![Interesting1](https://user-images.githubusercontent.com/50113756/110383615-2997f500-8022-11eb-9816-6e1da686bfae.png)
 ![Interesting2](https://user-images.githubusercontent.com/50113756/110383616-2997f500-8022-11eb-8531-24c95cdae256.png)
-
